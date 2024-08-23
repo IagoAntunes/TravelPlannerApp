@@ -3,7 +3,7 @@ import 'package:travelplannerapp/core/utils/hex_to_color.dart';
 class AppStyleColors {
   //Product
   static final lime300 = HexToColor.toColor('#BEF264');
-  final lime950 = HexToColor.toColor('#1A2E05');
+  static final lime950 = HexToColor.toColor('#1A2E05');
 
   //Grayscale
   static final white = HexToColor.toColor('#FFFFFF');
