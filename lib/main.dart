@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travelplannerapp/core/theme/app_theme.dart';
 
 import 'src/features/auth/presenter/pages/login_page.dart';
 
@@ -13,10 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.getTheme(context),
       home: const LoginPage(),
     );
   }
