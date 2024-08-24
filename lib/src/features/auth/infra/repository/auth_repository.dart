@@ -3,6 +3,8 @@ import 'package:travelplannerapp/core/utils/secure_storage_keys.dart';
 import 'package:travelplannerapp/services/storage/domain/secure_storage.dart';
 import 'package:travelplannerapp/src/features/auth/domain/models/user_model.dart';
 import 'package:travelplannerapp/src/features/auth/domain/repository/i_auth_repository.dart';
+import 'package:travelplannerapp/src/features/auth/domain/request/register_user_request.dart';
+import 'package:travelplannerapp/src/features/auth/domain/result/register_result.dart';
 import 'package:travelplannerapp/src/features/auth/infra/datasource/i_auth_datasource.dart';
 
 import '../../domain/request/login_request.dart';
@@ -42,6 +44,36 @@ class AuthRepository extends IAuthRepository {
       return LoginResult.failure(
         statusCode: result.errorCode,
         statusMsg: result.errorMessage,
+      );
+    }
+  }
+
+  @override
+  Future<RegisterResult> register(
+      String username, String email, String password) async {
+    var request = RegisterUserRequest(
+      username: username,
+      email: email,
+      password: password,
+    );
+
+    var response = await _dataSource.register(request);
+    if (response is SuccessResponseData) {
+      var user = UserModel.fromMap(response.data['user']);
+
+      var result = RegisterResult.success(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+        user: user,
+      );
+
+      return result;
+    } else {
+      response as ErrorResponseData;
+
+      return RegisterResult.failure(
+        statusCode: response.errorCode,
+        statusMsg: response.errorMessage,
       );
     }
   }

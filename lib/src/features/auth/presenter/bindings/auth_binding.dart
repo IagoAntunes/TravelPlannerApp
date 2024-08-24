@@ -4,6 +4,7 @@ import 'package:travelplannerapp/src/features/auth/external/datasource/auth_data
 import 'package:travelplannerapp/src/features/auth/infra/datasource/i_auth_datasource.dart';
 import 'package:travelplannerapp/src/features/auth/infra/repository/auth_repository.dart';
 import 'package:travelplannerapp/src/features/auth/presenter/blocs/login_cubit.dart';
+import 'package:travelplannerapp/src/features/auth/presenter/blocs/register_cubit.dart';
 
 class AuthBindings {
   static void setupAuthBindings() {
@@ -24,6 +25,10 @@ class AuthBindings {
 
     getIt.registerFactory(
       () => LoginCubit(repository: getIt()),
+    );
+
+    getIt.registerFactory(
+      () => RegisterCubit(authRepository: getIt()),
     );
   }
 }
