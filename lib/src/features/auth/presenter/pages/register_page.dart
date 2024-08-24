@@ -56,6 +56,9 @@ class RegisterPage extends StatelessWidget {
                     height: 42,
                     width: double.infinity,
                     child: CButton(
+                      onPressed: () {
+                        //
+                      },
                       text: 'Registrar',
                       stateTypeButton:
                           value ? StateTypeButton.idle : StateTypeButton.unable,

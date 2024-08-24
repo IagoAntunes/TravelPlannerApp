@@ -18,12 +18,14 @@ class CButton extends StatelessWidget {
   const CButton({
     super.key,
     required this.text,
+    required this.onPressed,
     this.type = TypeButton.text,
     this.stateTypeButton = StateTypeButton.idle,
   });
   final TypeButton type;
   final String text;
   final StateTypeButton stateTypeButton;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +40,7 @@ class CButton extends StatelessWidget {
           ),
           onPressed: (stateTypeButton != StateTypeButton.unable &&
                   stateTypeButton != StateTypeButton.loading)
-              ? () {
-                  //
-                }
+              ? onPressed
               : null,
           child: (stateTypeButton == StateTypeButton.loading)
               ? CircularProgressIndicator(

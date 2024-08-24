@@ -78,6 +78,7 @@ class _CTextFormFieldState extends State<CTextFormField> {
         obscureText: widget.typeTextFormField == TypeTextFormField.password
             ? _valueObscureText
             : false,
+        enabled: widget.enabled,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 16.0),
           prefixIcon: widget.prefixIconData != null
