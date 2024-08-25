@@ -1,5 +1,6 @@
 import 'package:travelplannerapp/core/utils/base_service_response.dart';
 import 'package:travelplannerapp/core/utils/secure_storage_keys.dart';
+import 'package:travelplannerapp/services/database/external/sharedPreferences/shared_preferences_service.dart';
 import 'package:travelplannerapp/services/storage/domain/secure_storage.dart';
 import 'package:travelplannerapp/src/features/auth/domain/models/user_model.dart';
 import 'package:travelplannerapp/src/features/auth/domain/repository/i_auth_repository.dart';
@@ -7,6 +8,7 @@ import 'package:travelplannerapp/src/features/auth/domain/request/register_user_
 import 'package:travelplannerapp/src/features/auth/domain/result/register_result.dart';
 import 'package:travelplannerapp/src/features/auth/infra/datasource/i_auth_datasource.dart';
 
+import '../../../../../services/database/external/sharedPreferences/shared_preferences_keys.dart';
 import '../../domain/request/login_request.dart';
 import '../../domain/result/login_result.dart';
 
@@ -14,10 +16,13 @@ class AuthRepository extends IAuthRepository {
   AuthRepository({
     required IAuthDataSource dataSource,
     required ISecureStorage secureStorage,
+    required SharedPreferencesService sharedPreferences,
   })  : _dataSource = dataSource,
-        _secureStorage = secureStorage;
+        _secureStorage = secureStorage,
+        _sharedPreferences = sharedPreferences;
   final IAuthDataSource _dataSource;
   final ISecureStorage _secureStorage;
+  final SharedPreferencesService _sharedPreferences;
 
   @override
   Future<LoginResult> login(String email, String password) async {
@@ -32,6 +37,8 @@ class AuthRepository extends IAuthRepository {
 
       await _secureStorage.writeData(
           key: SecureStorageKeys.token, value: token);
+
+      _sharedPreferences.saveData(SharedPreferencesKeys.isAuthenticated, true);
 
       return LoginResult.success(
         statusCode: result.statusCode,

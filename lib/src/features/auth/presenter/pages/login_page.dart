@@ -8,6 +8,7 @@ import 'package:travelplannerapp/src/features/auth/presenter/states/login_state.
 
 import '../../../../../core/components/c_button.dart';
 import '../../../../../core/components/c_textformfield.dart';
+import '../blocs/auth_cubit.dart';
 import '../blocs/login_cubit.dart';
 
 class LoginPage extends StatelessWidget {
@@ -35,7 +36,8 @@ class LoginPage extends StatelessWidget {
               bloc: _loginCubit,
               listener: (context, state) {
                 if (state is SuccessLoginListener) {
-                  //Navigator.pushReplacementNamed(context, '/home');
+                  var authCubit = GetIt.I.get<AuthCubit>();
+                  authCubit.authenticated();
                 } else if (state is FailureLoginListener) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -63,8 +65,8 @@ class LoginPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Center(
-                            child:
-                                Image.asset('assets/images/planner_logo.png')),
+                          child: Image.asset('assets/images/planner_logo.png'),
+                        ),
                         Text(
                           "Convide seus amigos e planeje sua próxima viagem",
                           style: AppStyleText.bodyLg(context).copyWith(

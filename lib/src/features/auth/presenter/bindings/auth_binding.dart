@@ -20,6 +20,7 @@ class AuthBindings {
       () => AuthRepository(
         dataSource: getIt(),
         secureStorage: getIt(),
+        sharedPreferences: getIt(),
       ),
     );
 
