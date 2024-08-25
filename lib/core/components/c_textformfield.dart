@@ -17,6 +17,9 @@ class CTextFormField extends StatefulWidget {
     this.suffixIconData,
     this.typeTextFormField = TypeTextFormField.idle,
     this.enabled = true,
+    this.readOnly,
+    this.onTap,
+    this.fillColor,
   });
 
   const CTextFormField.password({
@@ -27,14 +30,20 @@ class CTextFormField extends StatefulWidget {
     this.suffixIconData,
     this.typeTextFormField = TypeTextFormField.password,
     this.enabled = true,
+    this.readOnly = false,
+    this.onTap,
+    this.fillColor,
   });
 
   final TextEditingController? controller;
   final IconData? prefixIconData;
   final IconData? suffixIconData;
+  final Color? fillColor;
   final String? hintText;
   final bool enabled;
+  final bool? readOnly;
   final TypeTextFormField? typeTextFormField;
+  final void Function()? onTap;
   @override
   State<CTextFormField> createState() => _CTextFormFieldState();
 }
@@ -71,10 +80,12 @@ class _CTextFormFieldState extends State<CTextFormField> {
         }
       },
       child: TextFormField(
+        onTap: widget.onTap,
         controller: controller,
         style: AppStyleText.bodyMd(context).copyWith(
           color: AppStyleColors.zinc300,
         ),
+        readOnly: widget.readOnly ?? false,
         obscureText: widget.typeTextFormField == TypeTextFormField.password
             ? _valueObscureText
             : false,
@@ -101,7 +112,7 @@ class _CTextFormFieldState extends State<CTextFormField> {
                   ),
                 )
               : null,
-          fillColor: AppStyleColors.zinc900,
+          fillColor: widget.fillColor ?? AppStyleColors.zinc900,
           filled: true,
           hintText: widget.hintText,
           hintStyle: AppStyleText.bodyMd(context).copyWith(
