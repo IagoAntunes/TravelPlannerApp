@@ -5,6 +5,7 @@ import 'package:travelplannerapp/core/components/c_button.dart';
 import 'package:travelplannerapp/core/components/c_textformfield.dart';
 import 'package:travelplannerapp/core/style/app_style_text.dart';
 import 'package:travelplannerapp/src/features/travel/modules/create_travel/presenter/blocs/create_travel_cubit.dart';
+import 'package:travelplannerapp/src/features/travel/modules/create_travel/presenter/states/create_travel_state.dart';
 
 import '../../../../../../../core/style/app_style_colors.dart';
 import '../widgets/select_guests_widget.dart';
@@ -27,7 +28,23 @@ class _CreateTravelPageState extends State<CreateTravelPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
+    return BlocConsumer(
+      listener: (context, state) {
+        if (state is CreatedTravelListener) {
+          _cubit.cleanProps();
+          _localNameController.clear();
+          _dateController.clear();
+          _guestsController.clear();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Viagem criada com sucesso!"),
+            ),
+          );
+        }
+      },
+      listenWhen: (previous, current) => current is ICreateTravelListener,
+      buildWhen: (previous, current) => current is! ICreateTravelListener,
       bloc: _cubit,
       builder: (context, state) {
         return Container(
@@ -103,10 +120,17 @@ class _CreateTravelPageState extends State<CreateTravelPage> {
                       },
                     );
                     if (dateTimeRange != null) {
+                      var formattedStartDate =
+                          '${dateTimeRange.start.day.toString().padLeft(2, '0')}/${dateTimeRange.start.month.toString().padLeft(2, '0')}/${dateTimeRange.start.year}';
+                      var formattedEndDate =
+                          '${dateTimeRange.end.day.toString().padLeft(2, '0')}/${dateTimeRange.end.month.toString().padLeft(2, '0')}/${dateTimeRange.end.year}';
+
                       setState(() {
                         _dateController.text =
-                            '${dateTimeRange.start.day}/${dateTimeRange.start.month}/${dateTimeRange.start.year} - ${dateTimeRange.end.day}/${dateTimeRange.end.month}/${dateTimeRange.end.year}';
+                            '$formattedStartDate-$formattedEndDate';
                       });
+                      _cubit.setStartDate = formattedStartDate;
+                      _cubit.setEndDate = formattedEndDate;
                     }
                   },
                 ),
@@ -145,6 +169,7 @@ class _CreateTravelPageState extends State<CreateTravelPage> {
                                   ? StateTypeButton.idle
                                   : StateTypeButton.unable,
                               onPressed: () {
+                                _cubit.setLocalName = _localNameController.text;
                                 _cubit.changeStepToGuests();
                               },
                             ),
@@ -165,6 +190,7 @@ class _CreateTravelPageState extends State<CreateTravelPage> {
                         hintText: 'Quem estará na viagem?',
                         prefixIconData: Icons.person_add_outlined,
                         readOnly: true,
+                        enabled: _cubit.state is! LoadingCreateTravelState,
                         onTap: () async {
                           await showModalBottomSheet(
                             context: context,
@@ -188,10 +214,14 @@ class _CreateTravelPageState extends State<CreateTravelPage> {
                         child: CButton.icon(
                           text: 'Confirmar viagem',
                           onPressed: () {
-                            //
+                            _cubit.createTravel();
                           },
                           icon: Icons.arrow_right_outlined,
                           iconAlignment: IconAlignment.end,
+                          stateTypeButton:
+                              _cubit.state is! LoadingCreateTravelState
+                                  ? StateTypeButton.idle
+                                  : StateTypeButton.loading,
                         ),
                       )
                     ],

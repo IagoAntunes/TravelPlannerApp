@@ -20,7 +20,9 @@ class TravelBinding {
         httpService: getIt(),
       ),
     );
-    getIt.registerFactory(() => CreateTravelCubit());
+    getIt.registerFactory(() => CreateTravelCubit(
+          repository: getIt(),
+        ));
     getIt.registerSingleton(
       ListTravelsCubit(
         travelRepository: getIt(),
