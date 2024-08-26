@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:travelplannerapp/src/features/create_travel/presenter/states/create_travel_state.dart';
+import 'package:travelplannerapp/src/features/travel/modules/create_travel/presenter/states/create_travel_state.dart';
 
 enum CreateTravelStep {
   initial,

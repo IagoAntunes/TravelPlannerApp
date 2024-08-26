@@ -4,9 +4,9 @@ import 'package:get_it/get_it.dart';
 import 'package:travelplannerapp/core/components/c_button.dart';
 import 'package:travelplannerapp/core/components/c_textformfield.dart';
 import 'package:travelplannerapp/core/style/app_style_text.dart';
-import 'package:travelplannerapp/src/features/create_travel/presenter/blocs/create_travel_cubit.dart';
+import 'package:travelplannerapp/src/features/travel/modules/create_travel/presenter/blocs/create_travel_cubit.dart';
 
-import '../../../../../core/style/app_style_colors.dart';
+import '../../../../../../../core/style/app_style_colors.dart';
 import '../widgets/select_guests_widget.dart';
 
 class CreateTravelPage extends StatefulWidget {
@@ -30,7 +30,6 @@ class _CreateTravelPageState extends State<CreateTravelPage> {
     return BlocBuilder(
       bloc: _cubit,
       builder: (context, state) {
-        print("Oi");
         return Container(
           decoration: BoxDecoration(
             color: AppStyleColors.zinc900,

@@ -24,8 +24,8 @@ class AuthDataSource implements IAuthDataSource {
       } else {
         return ResponseData.error(response.data);
       }
-    } catch (e) {
-      return ResponseData.error({});
+    } on DioException catch (e) {
+      return ResponseData.error(e.response?.data);
     }
   }
 

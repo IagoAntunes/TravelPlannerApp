@@ -7,7 +7,7 @@ import 'package:travelplannerapp/core/binding/app_binding.dart';
 import 'package:travelplannerapp/core/theme/app_theme.dart';
 import 'package:travelplannerapp/services/database/external/sharedPreferences/shared_preferences_keys.dart';
 import 'package:travelplannerapp/src/features/auth/presenter/blocs/auth_cubit.dart';
-import 'package:travelplannerapp/src/features/create_travel/presenter/bindings/create_travel_binding.dart';
+import 'package:travelplannerapp/src/features/travel/binding/travel_binding.dart';
 import 'package:travelplannerapp/src/features/home/presenter/bindings/home_binding.dart';
 
 import 'services/database/external/sharedPreferences/shared_preferences_service.dart';
@@ -20,9 +20,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
   await AppBindings.setupBindings();
-  CreateTravelBinding.setUpCreateTravelBindings();
   HomeBinding.setUpHomeBindings();
   AuthBindings.setupAuthBindings();
+  TravelBinding.setUpTravelBinding();
 
   final prefs = GetIt.I.get<SharedPreferencesService>();
 

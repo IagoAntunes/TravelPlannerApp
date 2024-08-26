@@ -1,16 +1,19 @@
 import 'package:dio/dio.dart';
-import 'package:travelplannerapp/services/storage/infra/secure_storage_imp.dart';
+import 'package:travelplannerapp/services/storage/domain/secure_storage.dart';
 
 import '../../../core/utils/secure_storage_keys.dart';
 import 'http_exceptions_imp.dart';
 
 class AuthenticationInterceptor extends Interceptor {
-  AuthenticationInterceptor({required SecureStorage secureStorage})
+  AuthenticationInterceptor({required ISecureStorage secureStorage})
       : _secureStorage = secureStorage;
-  final SecureStorage _secureStorage;
+  final ISecureStorage _secureStorage;
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
+    if (options.uri.toString().contains('auth')) {
+      return super.onRequest(options, handler);
+    }
     var token = await _secureStorage.readData(key: SecureStorageKeys.token);
     if (!options.headers.containsKey('Authorization')) {
       options.headers.addAll({"Authorization": "Bearer $token"});

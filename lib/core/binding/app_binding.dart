@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelplannerapp/services/http/domain/http_service.dart';
+import 'package:travelplannerapp/services/http/infra/authentication_interceptor.dart';
 import 'package:travelplannerapp/services/http/infra/http_service_imp.dart';
 import 'package:travelplannerapp/services/storage/domain/secure_storage.dart';
 import 'package:travelplannerapp/services/storage/infra/secure_storage_imp.dart';
@@ -12,10 +13,10 @@ import '../../services/database/external/sharedPreferences/shared_preferences_se
 class AppBindings {
   static Future<void> setupBindings() async {
     var getIt = GetIt.instance;
-    var dio = Dio();
-    dio.options.validateStatus = (status) {
-      return true;
-    };
+
+    getIt.registerSingleton<ISecureStorage>(
+      SecureStorage(),
+    );
 
     var prefs = await SharedPreferences.getInstance();
 
@@ -27,11 +28,12 @@ class AppBindings {
         preferences: getIt(),
       ),
     );
+
+    var dio = Dio();
+    dio.interceptors.add(AuthenticationInterceptor(secureStorage: getIt()));
+
     getIt.registerSingleton<Dio>(dio);
 
-    getIt.registerSingleton<ISecureStorage>(
-      SecureStorage(),
-    );
     getIt.registerSingleton<IHttpService>(
       HttpServiceImp(),
     );

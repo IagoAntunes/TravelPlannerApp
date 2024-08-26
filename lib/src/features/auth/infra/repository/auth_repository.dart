@@ -36,10 +36,11 @@ class AuthRepository extends IAuthRepository {
       var user = UserModel.fromMap(result.data['user']);
 
       await _secureStorage.writeData(
-          key: SecureStorageKeys.token, value: token);
+        key: SecureStorageKeys.token,
+        value: token,
+      );
 
       _sharedPreferences.saveData(SharedPreferencesKeys.isAuthenticated, true);
-
       return LoginResult.success(
         statusCode: result.statusCode,
         statusMsg: result.statusMsg,
