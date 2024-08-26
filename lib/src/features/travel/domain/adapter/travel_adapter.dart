@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:travelplannerapp/src/features/travel/domain/model/travel_model.dart';
 
+import '../model/guest_model.dart';
+
 class TravelAdapter {
   static Map<String, dynamic> toMap(TravelModel travel) {
     return <String, dynamic>{
@@ -18,6 +20,12 @@ class TravelAdapter {
       localName: map['localName'] as String,
       startDate: map['startDate'] as String,
       endDate: map['endDate'] as String,
+      guests: map['guests'] != null
+          ? List<GuestModel>.from(
+              (map['guests'] as List)
+                  .map((x) => GuestModel.fromMap(x as Map<String, dynamic>)),
+            )
+          : [],
     );
   }
 

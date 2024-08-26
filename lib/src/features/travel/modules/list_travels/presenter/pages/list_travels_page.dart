@@ -106,7 +106,7 @@ class _ListTravelsPageState extends State<ListTravelsPage> {
                                       ),
                                       const SizedBox(width: 6),
                                       Text(
-                                        "${successState.travels[index].startDate.split('/')[0]} a 23 de ago,",
+                                        "${successState.travels[index].startDate.split('/')[0]}/${successState.travels[index].startDate.split('/')[1]} a ${successState.travels[index].endDate.split('/')[0]}/${successState.travels[index].endDate.split('/')[1]}",
                                         style: AppStyleText.bodySm(context)
                                             .copyWith(
                                                 color: AppStyleColors.zinc400),
@@ -121,7 +121,7 @@ class _ListTravelsPageState extends State<ListTravelsPage> {
                                       ),
                                       const SizedBox(width: 6),
                                       Text(
-                                        successState.travels[index].localName,
+                                        "${successState.travels[index].guests!.length} convidado(s)",
                                         style: AppStyleText.bodyMd(context)
                                             .copyWith(
                                                 color: AppStyleColors.zinc400),
