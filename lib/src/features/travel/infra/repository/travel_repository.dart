@@ -7,6 +7,10 @@ import 'package:travelplannerapp/src/features/travel/domain/result/create_travel
 import 'package:travelplannerapp/src/features/travel/domain/result/fetch_travels_result.dart';
 import 'package:travelplannerapp/src/features/travel/infra/datasource/i_travel_datasource.dart';
 
+import '../../domain/adapter/activity_adapter.dart';
+import '../../domain/model/activity_model.dart';
+import '../../domain/result/fetch_activities_result.dart';
+
 class TravelRepository extends ITravelsRepository {
   TravelRepository({required ITravelDataSource travelDataSource})
       : _travelDataSource = travelDataSource;
@@ -56,6 +60,28 @@ class TravelRepository extends ITravelsRepository {
     } else {
       response as ErrorResponseData;
       return CreateTravelResult.failure(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+      );
+    }
+  }
+
+  @override
+  Future<FetchActivitiesResult> fetchActivities(int travelId) async {
+    final response = await _travelDataSource.fetchActivitiesByTravel(travelId);
+    if (response is SuccessResponseData) {
+      var listActivities = response.data['activities']
+          .map<ActivityModel>((activity) => ActivityAdapter.fromMap(activity))
+          .toList();
+
+      return FetchActivitiesResult.success(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+        activities: listActivities,
+      );
+    } else {
+      response as ErrorResponseData;
+      return FetchActivitiesResult.failure(
         statusCode: response.statusCode,
         statusMsg: response.statusMsg,
       );

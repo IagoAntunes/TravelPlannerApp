@@ -40,4 +40,20 @@ class TravelDataSource extends ITravelDataSource {
       return ResponseData.error({});
     }
   }
+
+  @override
+  Future<IResponseData> fetchActivitiesByTravel(int travelId) async {
+    try {
+      final response = await _httpService.get(
+        "${AppRoutesApi.getActivitiesByTravel}/$travelId",
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        return ResponseData.success(response.data);
+      } else {
+        return ResponseData.error(response.data);
+      }
+    } catch (e) {
+      return ResponseData.error({});
+    }
+  }
 }

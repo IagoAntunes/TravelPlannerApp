@@ -3,5 +3,6 @@ import 'package:travelplannerapp/src/features/travel/domain/request/create_trave
 
 abstract class ITravelDataSource {
   Future<IResponseData> fetchTravels();
+  Future<IResponseData> fetchActivitiesByTravel(int travelId);
   Future<IResponseData> createTravel(CreateTravelRequest request);
 }

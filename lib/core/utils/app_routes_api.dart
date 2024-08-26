@@ -6,4 +6,8 @@ class AppRoutesApi {
   //travel
   static const String getTravelByUser = "$baseUrl/travel/getTravelsByUser";
   static const String createTravel = "$baseUrl/travel";
+
+  //activity
+  static const String getActivitiesByTravel =
+      "$baseUrl/activity/getActivitiesByTravelId";
 }

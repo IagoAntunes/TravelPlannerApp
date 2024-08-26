@@ -26,6 +26,7 @@ class CButton extends StatelessWidget {
     this.backgroundColor,
     this.textColor,
     this.iconColor,
+    this.padding,
   });
   const CButton.icon({
     super.key,
@@ -38,6 +39,7 @@ class CButton extends StatelessWidget {
     this.backgroundColor,
     this.textColor,
     this.iconColor,
+    this.padding,
   });
   final TypeButton type;
   final Color? backgroundColor;
@@ -48,11 +50,13 @@ class CButton extends StatelessWidget {
   final IconData? icon;
   final Color? iconColor;
   final IconAlignment? iconAlignment;
+  final EdgeInsets? padding;
   @override
   Widget build(BuildContext context) {
     return switch (type) {
       TypeButton.text => ElevatedButton(
           style: ElevatedButton.styleFrom(
+            padding: padding,
             backgroundColor: backgroundColor ?? AppStyleColors.lime300,
             disabledBackgroundColor: AppStyleColors.zinc200,
             shape: RoundedRectangleBorder(
@@ -76,6 +80,7 @@ class CButton extends StatelessWidget {
         ),
       TypeButton.icon => ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
+            padding: padding,
             backgroundColor: backgroundColor ?? AppStyleColors.lime300,
             disabledBackgroundColor: AppStyleColors.zinc200,
             shape: RoundedRectangleBorder(
