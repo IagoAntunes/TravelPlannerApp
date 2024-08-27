@@ -66,4 +66,8 @@ class ResponseData {
   static ErrorResponseData error(Map<String, dynamic> responseData) {
     return ErrorResponseData.fromMap(responseData);
   }
+
+  static ErrorResponseData errorCatch(Map<String, dynamic> responseData) {
+    return ErrorResponseData.fromMap(responseData);
+  }
 }

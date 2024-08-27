@@ -82,7 +82,7 @@ class _CreateTravelPageState extends State<CreateTravelPage> {
                   onTap: () async {
                     DateTimeRange? dateTimeRange = await showDateRangePicker(
                       context: context,
-                      firstDate: DateTime.now(),
+                      firstDate: DateTime.now().subtract(Duration(days: 7)),
                       lastDate: DateTime.now().add(const Duration(days: 365)),
                       initialEntryMode: DatePickerEntryMode.calendar,
                       builder: (context, child) {

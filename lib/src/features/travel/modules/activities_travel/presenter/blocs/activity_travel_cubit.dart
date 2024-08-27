@@ -22,11 +22,14 @@ class ActivityTravelCubit extends Cubit<IActivityTravelState> {
     emit(LoadingActivityTravelState(type: state.type));
     final result = await _travelRepository.fetchActivities(travelId);
     for (var activity in result.activities) {
-      if (groupedActivities.containsKey(activity.date)) {
-        groupedActivities[activity.date]!.add(activity);
+      if (groupedActivities.containsKey(activity.date.split(' ')[0])) {
+        groupedActivities[activity.date.split(' ')[0]]!.add(activity);
       } else {
         groupedActivities[activity.date.split(' ')[0]] = [activity];
       }
+    }
+    for (var activities in groupedActivities.values) {
+      activities.sort((a, b) => a.date.compareTo(b.date));
     }
     if (result.isSuccess) {
       emit(SuccessActivityTravelState(

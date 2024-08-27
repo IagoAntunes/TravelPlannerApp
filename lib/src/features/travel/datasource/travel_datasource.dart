@@ -18,7 +18,7 @@ class TravelDataSource extends ITravelDataSource {
       } else {
         return ResponseData.error(response.data);
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return ResponseData.error({});
     }
   }
@@ -53,7 +53,10 @@ class TravelDataSource extends ITravelDataSource {
         return ResponseData.error(response.data);
       }
     } catch (e) {
-      return ResponseData.error({});
+      return ResponseData.error({
+        'statusCode': '500',
+        'statusMsg': 'Internal Server Error',
+      });
     }
   }
 }

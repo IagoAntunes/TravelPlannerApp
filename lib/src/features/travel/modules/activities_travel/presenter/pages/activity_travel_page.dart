@@ -44,6 +44,31 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
     }
   }
 
+  bool activityHasAlreadyPassed(String dateTime) {
+    var now = DateTime.now();
+    var aux = dateTime.split(' ');
+    String date = aux[0];
+    String hour = '23:59';
+    if (aux.length > 1) {
+      hour = aux[1];
+    }
+    var activityDate = DateFormat("dd/MM/yyyy HH:mm").parse("$date $hour");
+    return now.isAfter(activityDate);
+  }
+
+  String _getWeekdayName(DateTime date) {
+    const weekdays = [
+      'Segunda-feira',
+      'Terça-feira',
+      'Quarta-feira',
+      'Quinta-feira',
+      'Sexta-feira',
+      'Sábado',
+      'Domingo'
+    ];
+    return weekdays[date.weekday - 1];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +119,6 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                 child: BlocBuilder<ActivityTravelCubit, IActivityTravelState>(
                   bloc: _cubit,
                   builder: (context, state) {
-                    print(state);
                     return switch (state) {
                       LoadingActivityTravelState() => Center(
                           child: CircularProgressIndicator(
@@ -132,22 +156,58 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                                   child: ListView.separated(
                                     itemCount: dateList.length,
                                     separatorBuilder: (context, index) =>
-                                        const SizedBox(height: 16),
+                                        const SizedBox(height: 24),
                                     itemBuilder: (_, indexDate) {
                                       return Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            "Dia ${dateList[indexDate].split('/')[0]}",
-                                            style:
-                                                AppStyleText.headingMd(context)
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Dia ${dateList[indexDate].split('/')[0]}",
+                                                style: AppStyleText.headingMd(
+                                                        context)
                                                     .copyWith(
-                                              color: AppStyleColors.zinc100,
-                                            ),
+                                                  color:
+                                                      activityHasAlreadyPassed(
+                                                    dateList[indexDate],
+                                                  )
+                                                          ? AppStyleColors
+                                                              .zinc400
+                                                          : AppStyleColors
+                                                              .zinc100,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                _getWeekdayName(DateFormat(
+                                                        "dd/MM/yyyy")
+                                                    .parse(
+                                                        dateList[indexDate])),
+                                                style:
+                                                    AppStyleText.bodySm(context)
+                                                        .copyWith(
+                                                  color: AppStyleColors.zinc500,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                           const SizedBox(height: 8),
-                                          ListView.builder(
+                                          if (successState
+                                                  .groupedActivities[
+                                                      dateList[indexDate]]
+                                                  ?.isEmpty ??
+                                              true)
+                                            Text(
+                                              "Nenhuma atividade cadastrada nessa data. ",
+                                              style:
+                                                  AppStyleText.bodySm(context)
+                                                      .copyWith(
+                                                color: AppStyleColors.zinc500,
+                                              ),
+                                            ),
+                                          ListView.separated(
                                             shrinkWrap: true,
                                             physics:
                                                 const ClampingScrollPhysics(),
@@ -156,6 +216,9 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                                                         dateList[indexDate]]
                                                     ?.length ??
                                                 0,
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    const SizedBox(height: 12),
                                             itemBuilder:
                                                 (_, indexDayActivity) =>
                                                     Container(
@@ -177,10 +240,33 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                                                   Row(
                                                     children: [
                                                       Icon(
-                                                        Icons
-                                                            .check_circle_outline,
-                                                        color: AppStyleColors
-                                                            .lime300,
+                                                        activityHasAlreadyPassed(
+                                                          successState
+                                                              .groupedActivities[
+                                                                  dateList[
+                                                                      indexDate]]!
+                                                              .elementAt(
+                                                                  indexDayActivity)
+                                                              .date,
+                                                        )
+                                                            ? Icons
+                                                                .check_circle_outline
+                                                            : Icons
+                                                                .radio_button_unchecked,
+                                                        color:
+                                                            activityHasAlreadyPassed(
+                                                          successState
+                                                              .groupedActivities[
+                                                                  dateList[
+                                                                      indexDate]]!
+                                                              .elementAt(
+                                                                  indexDayActivity)
+                                                              .date,
+                                                        )
+                                                                ? AppStyleColors
+                                                                    .zinc200
+                                                                : AppStyleColors
+                                                                    .lime300,
                                                       ),
                                                       const SizedBox(width: 16),
                                                       Text(
@@ -195,8 +281,20 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                                                             AppStyleText.bodyMd(
                                                                     context)
                                                                 .copyWith(
-                                                          color: AppStyleColors
-                                                              .zinc100,
+                                                          color:
+                                                              activityHasAlreadyPassed(
+                                                            successState
+                                                                .groupedActivities[
+                                                                    dateList[
+                                                                        indexDate]]!
+                                                                .elementAt(
+                                                                    indexDayActivity)
+                                                                .date,
+                                                          )
+                                                                  ? AppStyleColors
+                                                                      .zinc400
+                                                                  : AppStyleColors
+                                                                      .zinc100,
                                                         ),
                                                       ),
                                                     ],
@@ -206,8 +304,20 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                                                     style: AppStyleText.bodyMd(
                                                             context)
                                                         .copyWith(
-                                                      color: AppStyleColors
-                                                          .zinc100,
+                                                      color:
+                                                          activityHasAlreadyPassed(
+                                                        successState
+                                                            .groupedActivities[
+                                                                dateList[
+                                                                    indexDate]]!
+                                                            .elementAt(
+                                                                indexDayActivity)
+                                                            .date,
+                                                      )
+                                                              ? AppStyleColors
+                                                                  .zinc400
+                                                              : AppStyleColors
+                                                                  .zinc100,
                                                     ),
                                                   ),
                                                 ],
