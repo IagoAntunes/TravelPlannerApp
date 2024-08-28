@@ -64,7 +64,7 @@ class TravelRepository extends ITravelsRepository {
       response as ErrorResponseData;
       return CreateTravelResult.failure(
         statusCode: response.statusCode,
-        statusMsg: response.statusMsg,
+        statusMsg: response.errorMessage,
       );
     }
   }
@@ -122,6 +122,23 @@ class TravelRepository extends ITravelsRepository {
   @override
   Future<IBaseResult> deleteActivity(int activityId) async {
     var response = await _travelDataSource.deleteActivity(activityId);
+    if (response is SuccessResponseData) {
+      return BaseResult.success(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+      );
+    } else {
+      response as ErrorResponseData;
+      return BaseResult.failure(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+      );
+    }
+  }
+
+  @override
+  Future<IBaseResult> deleteTravel(int travelId) async {
+    var response = await _travelDataSource.deleteTravel(travelId);
     if (response is SuccessResponseData) {
       return BaseResult.success(
         statusCode: response.statusCode,

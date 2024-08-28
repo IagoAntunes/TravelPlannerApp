@@ -22,8 +22,8 @@ class TravelDataSource extends ITravelDataSource {
       } else {
         return ResponseData.error(response.data);
       }
-    } on DioException {
-      return ResponseData.error({});
+    } on DioException catch (e) {
+      return ResponseData.error(e.response!.data);
     }
   }
 
@@ -43,8 +43,8 @@ class TravelDataSource extends ITravelDataSource {
       } else {
         return ResponseData.error(response.data);
       }
-    } catch (e) {
-      return ResponseData.error({});
+    } on DioException catch (e) {
+      return ResponseData.error(e.response!.data);
     }
   }
 
@@ -62,11 +62,8 @@ class TravelDataSource extends ITravelDataSource {
       } else {
         return ResponseData.error(response.data);
       }
-    } catch (e) {
-      return ResponseData.error({
-        'statusCode': '500',
-        'statusMsg': 'Internal Server Error',
-      });
+    } on DioException catch (e) {
+      return ResponseData.error(e.response!.data);
     }
   }
 
@@ -85,11 +82,8 @@ class TravelDataSource extends ITravelDataSource {
       } else {
         return ResponseData.error(response.data);
       }
-    } catch (e) {
-      return ResponseData.error({
-        'statusCode': '500',
-        'statusMsg': 'Internal Server Error',
-      });
+    } on DioException catch (e) {
+      return ResponseData.error(e.response!.data);
     }
   }
 
@@ -104,8 +98,24 @@ class TravelDataSource extends ITravelDataSource {
       } else {
         return ResponseData.error(response.data);
       }
-    } catch (e) {
-      return ResponseData.errorCatch();
+    } on DioException catch (e) {
+      return ResponseData.error(e.response!.data);
+    }
+  }
+
+  @override
+  Future<IResponseData> deleteTravel(int travelId) async {
+    try {
+      final response = await _httpService.delete(
+        '${AppRoutesApi.deleteTravel}/$travelId',
+      );
+      if (response.statusCode == HttpStatus.noContent) {
+        return ResponseData.success(response.data, response.statusCode!);
+      } else {
+        return ResponseData.error(response.data);
+      }
+    } on DioException catch (e) {
+      return ResponseData.error(e.response!.data);
     }
   }
 }

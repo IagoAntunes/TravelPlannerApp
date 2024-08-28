@@ -18,9 +18,15 @@ class LoadingCreateTravelState extends ICreateTravelState {
 }
 
 class CreatedTravelListener extends ICreateTravelListener {
-  CreatedTravelListener({required super.createTravelStep});
+  CreatedTravelListener({
+    required super.createTravelStep,
+  });
 }
 
 class FailureCreateTravelListener extends ICreateTravelListener {
-  FailureCreateTravelListener({required super.createTravelStep});
+  FailureCreateTravelListener({
+    required super.createTravelStep,
+    required this.message,
+  });
+  String message;
 }

@@ -27,7 +27,17 @@ class ActivityTravelCubit extends Cubit<IActivityTravelState> {
     return activities;
   }
 
+  Future<bool> deleteTravel(int travelId) async {
+    var result = await _travelRepository.deleteTravel(travelId);
+    if (result.isSuccess) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void fetchActivities(int travelId) async {
+    groupedActivities.clear();
     emit(LoadingActivityTravelState(type: state.type));
     final result = await _travelRepository.fetchActivities(travelId);
     for (var activity in result.activities) {

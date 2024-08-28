@@ -52,10 +52,14 @@ class CreateTravelCubit extends Cubit<ICreateTravelState> {
     );
 
     if (result.isSuccess) {
-      emit(CreatedTravelListener(createTravelStep: state.createTravelStep));
+      emit(CreatedTravelListener(
+        createTravelStep: state.createTravelStep,
+      ));
     } else {
       emit(FailureCreateTravelListener(
-          createTravelStep: state.createTravelStep));
+        createTravelStep: state.createTravelStep,
+        message: result.statusMsg,
+      ));
     }
 
     emit(IdleCreateTravelState(createTravelStep: state.createTravelStep));

@@ -85,6 +85,12 @@ class _ListTravelsPageState extends State<ListTravelsPage> {
                                       travel: successState.travels[index],
                                     ),
                                   ),
+                                ).then(
+                                  (value) {
+                                    if (value != null && value == true) {
+                                      _cubit.fetchTravels();
+                                    }
+                                  },
                                 );
                               },
                               title: Row(

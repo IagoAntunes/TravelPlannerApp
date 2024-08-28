@@ -22,4 +22,6 @@ abstract class ITravelsRepository {
     String endDate,
     List<String> guests,
   );
+
+  Future<IBaseResult> deleteTravel(int travelId);
 }

@@ -12,9 +12,11 @@ class CreateActivityWidget extends StatefulWidget {
   const CreateActivityWidget({
     super.key,
     required this.travelId,
+    required this.startDateTravel,
     required this.endDateTravel,
   });
   final int travelId;
+  final String startDateTravel;
   final String endDateTravel;
   @override
   State<CreateActivityWidget> createState() => _CreateActivityWidgetState();
@@ -113,7 +115,8 @@ class _CreateActivityWidgetState extends State<CreateActivityWidget> {
                         onTap: () async {
                           await showDatePicker(
                             context: context,
-                            firstDate: DateTime.now(),
+                            firstDate: DateTime.parse(
+                                _convertDateFormat(widget.startDateTravel)),
                             lastDate: DateTime.parse(
                                 _convertDateFormat(widget.endDateTravel)),
                           ).then(

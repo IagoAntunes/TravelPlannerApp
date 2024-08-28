@@ -41,6 +41,12 @@ class _CreateTravelPageState extends State<CreateTravelPage> {
               content: Text("Viagem criada com sucesso!"),
             ),
           );
+        } else if (state is FailureCreateTravelListener) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+            ),
+          );
         }
       },
       listenWhen: (previous, current) => current is ICreateTravelListener,

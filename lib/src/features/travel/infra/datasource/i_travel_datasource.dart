@@ -8,4 +8,5 @@ abstract class ITravelDataSource {
   Future<IResponseData> createActivity(CreateActivityRequest request);
   Future<IResponseData> deleteActivity(int activityId);
   Future<IResponseData> createTravel(CreateTravelRequest request);
+  Future<IResponseData> deleteTravel(int travelId);
 }

@@ -70,6 +70,26 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
     return weekdays[date.weekday - 1];
   }
 
+  IconData _statusIconGuest(String status) {
+    if (status == "PENDING") {
+      return Icons.circle_outlined;
+    } else if (status == "ACCEPTED") {
+      return Icons.check_circle;
+    } else {
+      return Icons.check_circle;
+    }
+  }
+
+  Color _statusColorGuest(String status) {
+    if (status == "PENDING") {
+      return Colors.orange;
+    } else if (status == "ACCEPTED") {
+      return AppStyleColors.lime300;
+    } else {
+      return Colors.red;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,10 +123,62 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                         ],
                       ),
                     ),
-                    Text(
-                      "${widget.travel.startDate.split('/')[0]}/${widget.travel.startDate.split('/')[1]} a ${widget.travel.endDate.split('/')[0]}/${widget.travel.endDate.split('/')[1]}",
-                      style: AppStyleText.bodySm(context)
-                          .copyWith(color: AppStyleColors.zinc100),
+                    Row(
+                      children: [
+                        Text(
+                          "${widget.travel.startDate.split('/')[0]}/${widget.travel.startDate.split('/')[1]} a ${widget.travel.endDate.split('/')[0]}/${widget.travel.endDate.split('/')[1]}",
+                          style: AppStyleText.bodySm(context)
+                              .copyWith(color: AppStyleColors.zinc100),
+                        ),
+                        const SizedBox(width: 8),
+                        PopupMenuButton(
+                          color: AppStyleColors.zinc800,
+                          elevation: 0.0,
+                          style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStatePropertyAll(AppStyleColors.zinc800),
+                            shape: WidgetStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            iconColor:
+                                WidgetStatePropertyAll(AppStyleColors.zinc100),
+                          ),
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              onTap: () async {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                                var deleted =
+                                    await _cubit.deleteTravel(widget.travel.id);
+                                Navigator.pop(context);
+                                Navigator.pop(context, deleted);
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete_outline,
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text(
+                                    "Deletar",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -149,6 +221,8 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                                           builder: (context) =>
                                               CreateActivityWidget(
                                             travelId: widget.travel.id,
+                                            startDateTravel:
+                                                widget.travel.startDate,
                                             endDateTravel:
                                                 widget.travel.endDate,
                                           ),
@@ -381,12 +455,42 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                           EnumActivityTravelType.details => Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Divider(
+                                  color: AppStyleColors.zinc800,
+                                ),
+                                Text(
+                                  "Convidados",
+                                  style: AppStyleText.headingLg(context)
+                                      .copyWith(color: AppStyleColors.zinc50),
+                                ),
                                 Expanded(
                                     child: ListView.builder(
-                                  itemCount:
-                                      successState.groupedActivities.length,
-                                  itemBuilder: (context, index) =>
-                                      const Text("Oi"),
+                                  itemCount: widget.travel.guests?.length ?? 0,
+                                  itemBuilder: (context, index) => Container(
+                                    child: ListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      title: Text(
+                                        widget.travel.guests![index].name,
+                                        style: AppStyleText.headingXs(context)
+                                            .copyWith(
+                                                color: AppStyleColors.zinc100),
+                                      ),
+                                      subtitle: Text(
+                                        widget.travel.guests![index].email,
+                                        style: AppStyleText.bodyMd(context)
+                                            .copyWith(
+                                                color: AppStyleColors.zinc400),
+                                      ),
+                                      trailing: Icon(
+                                        _statusIconGuest(
+                                          widget.travel.guests![index].status,
+                                        ),
+                                        color: _statusColorGuest(
+                                          widget.travel.guests![index].status,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ))
                               ],
                             ),
