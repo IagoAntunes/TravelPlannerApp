@@ -6,6 +6,14 @@ abstract class IActivityTravelState {
   EnumActivityTravelType type;
 }
 
+abstract class IActivityTravelListener extends IActivityTravelState {
+  IActivityTravelListener({required super.type});
+}
+
+class CreatedActivityTravelListener extends IActivityTravelListener {
+  CreatedActivityTravelListener({required super.type});
+}
+
 class IdleActivityTravelState extends IActivityTravelState {
   IdleActivityTravelState({required super.type});
 }

@@ -11,4 +11,5 @@ class AppRoutesApi {
   //activity
   static const String getActivitiesByTravel =
       "$baseUrl/activity/getActivitiesByTravelId";
+  static const String createActivity = "$baseUrl/activity/create";
 }

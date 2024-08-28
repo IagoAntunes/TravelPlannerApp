@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:travelplannerapp/src/features/travel/domain/repository/i_travel_repository.dart';
 import 'package:travelplannerapp/src/features/travel/modules/activities_travel/presenter/states/activity_travel_state.dart';
 
@@ -36,6 +37,33 @@ class ActivityTravelCubit extends Cubit<IActivityTravelState> {
         groupedActivities: groupedActivities,
         type: state.type,
       ));
+    } else {
+      emit(FailureActivityTravelState(type: state.type));
+    }
+  }
+
+  Future<void> createActivity(
+      String name, String date, String time, int travelId) async {
+    emit(LoadingActivityTravelState(type: state.type));
+
+    List<String> dateParts = date.split('/');
+    int day = int.parse(dateParts[0]);
+    int month = int.parse(dateParts[1]);
+    int year = int.parse(dateParts[2]);
+
+    List<String> timeParts = time.split(':');
+    int hour = int.parse(timeParts[0]);
+    int minute = int.parse(timeParts[1]);
+
+    DateTime dateTime = DateTime(year, month, day, hour, minute);
+    String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+    var result = await _travelRepository.createActivity(
+      name,
+      formattedDate,
+      travelId,
+    );
+    if (result.isSuccess) {
+      emit(CreatedActivityTravelListener(type: state.type));
     } else {
       emit(FailureActivityTravelState(type: state.type));
     }

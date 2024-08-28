@@ -2,6 +2,7 @@ import 'package:travelplannerapp/core/utils/base_service_response.dart';
 import 'package:travelplannerapp/src/features/travel/domain/adapter/travel_adapter.dart';
 import 'package:travelplannerapp/src/features/travel/domain/model/travel_model.dart';
 import 'package:travelplannerapp/src/features/travel/domain/repository/i_travel_repository.dart';
+import 'package:travelplannerapp/src/features/travel/domain/request/create_activity_request.dart';
 import 'package:travelplannerapp/src/features/travel/domain/request/create_travel_request.dart';
 import 'package:travelplannerapp/src/features/travel/domain/result/create_travel_result.dart';
 import 'package:travelplannerapp/src/features/travel/domain/result/fetch_travels_result.dart';
@@ -9,6 +10,7 @@ import 'package:travelplannerapp/src/features/travel/infra/datasource/i_travel_d
 
 import '../../domain/adapter/activity_adapter.dart';
 import '../../domain/model/activity_model.dart';
+import '../../domain/result/create_activity_result.dart';
 import '../../domain/result/fetch_activities_result.dart';
 
 class TravelRepository extends ITravelsRepository {
@@ -82,6 +84,34 @@ class TravelRepository extends ITravelsRepository {
     } else {
       response as ErrorResponseData;
       return FetchActivitiesResult.failure(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+      );
+    }
+  }
+
+  @override
+  Future<CreateActivityResult> createActivity(
+    String name,
+    String dateTime,
+    int travelId,
+  ) async {
+    var request = CreateActivityRequest(
+      name: name,
+      date: dateTime,
+      travelId: travelId,
+    );
+    final response = await _travelDataSource.createActivity(request);
+    if (response is SuccessResponseData) {
+      //
+
+      return CreateActivityResult.success(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+      );
+    } else {
+      response as ErrorResponseData;
+      return CreateActivityResult.failure(
         statusCode: response.statusCode,
         statusMsg: response.statusMsg,
       );

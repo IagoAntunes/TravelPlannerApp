@@ -42,6 +42,16 @@ class ErrorResponseData extends IResponseData {
   final String errorTime;
 
   factory ErrorResponseData.fromMap(Map<String, dynamic> map) {
+    if (map.isEmpty) {
+      ErrorResponseData(
+        map['statusCode'] as String,
+        map['statusMsg'] as String,
+        apiPath: map['apiPath'] as String,
+        errorCode: map['errorCode'] as String,
+        errorMessage: map['errorMessage'] as String,
+        errorTime: DateTime.now().toString(),
+      );
+    }
     return ErrorResponseData(
       map['statusCode'] as String,
       map['statusMsg'] as String,

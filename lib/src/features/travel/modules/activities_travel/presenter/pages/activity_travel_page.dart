@@ -5,13 +5,14 @@ import 'package:intl/intl.dart';
 import 'package:travelplannerapp/core/components/c_button.dart';
 import 'package:travelplannerapp/core/style/app_style_colors.dart';
 import 'package:travelplannerapp/src/features/travel/domain/model/travel_model.dart';
+import 'package:travelplannerapp/src/features/travel/modules/activities_travel/presenter/widgets/create_activity_widget.dart';
 
 import '../../../../../../../core/style/app_style_text.dart';
 import '../blocs/activity_travel_cubit.dart';
 import '../states/activity_travel_state.dart';
 
 class ActivityTravelPage extends StatefulWidget {
-  ActivityTravelPage({
+  const ActivityTravelPage({
     super.key,
     required this.travel,
   });
@@ -72,11 +73,7 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _cubit.fetchActivities(widget.travel.id);
-        },
-      ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -146,7 +143,25 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                                       icon: Icons.add,
                                       iconAlignment: IconAlignment.end,
                                       onPressed: () {
-                                        //
+                                        showModalBottomSheet(
+                                          context: context,
+                                          isScrollControlled: true,
+                                          builder: (context) =>
+                                              CreateActivityWidget(
+                                            travelId: widget.travel.id,
+                                            endDateTravel:
+                                                widget.travel.endDate,
+                                          ),
+                                        ).then(
+                                          (value) {
+                                            if (value != null &&
+                                                value == true) {
+                                              _cubit.fetchActivities(
+                                                widget.travel.id,
+                                              );
+                                            }
+                                          },
+                                        );
                                       },
                                     )
                                   ],

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:travelplannerapp/core/utils/app_routes_api.dart';
 import 'package:travelplannerapp/core/utils/base_service_response.dart';
+import 'package:travelplannerapp/src/features/travel/domain/request/create_activity_request.dart';
 import 'package:travelplannerapp/src/features/travel/domain/request/create_travel_request.dart';
 import 'package:travelplannerapp/src/features/travel/infra/datasource/i_travel_datasource.dart';
 
@@ -18,7 +19,7 @@ class TravelDataSource extends ITravelDataSource {
       } else {
         return ResponseData.error(response.data);
       }
-    } on DioException catch (e) {
+    } on DioException {
       return ResponseData.error({});
     }
   }
@@ -48,6 +49,26 @@ class TravelDataSource extends ITravelDataSource {
         "${AppRoutesApi.getActivitiesByTravel}/$travelId",
       );
       if (response.statusCode == HttpStatus.ok) {
+        return ResponseData.success(response.data);
+      } else {
+        return ResponseData.error(response.data);
+      }
+    } catch (e) {
+      return ResponseData.error({
+        'statusCode': '500',
+        'statusMsg': 'Internal Server Error',
+      });
+    }
+  }
+
+  @override
+  Future<IResponseData> createActivity(CreateActivityRequest request) async {
+    try {
+      final response = await _httpService.post(
+        AppRoutesApi.createActivity,
+        data: request.toMap(),
+      );
+      if (response.statusCode == HttpStatus.created) {
         return ResponseData.success(response.data);
       } else {
         return ResponseData.error(response.data);
