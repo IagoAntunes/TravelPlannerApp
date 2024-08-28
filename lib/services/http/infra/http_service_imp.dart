@@ -66,7 +66,6 @@ class HttpServiceImp implements IHttpService {
   }) async {
     final response =
         await _dio.post(url, data: data, queryParameters: queryParameters);
-    print("Oi");
   }
 
   @override

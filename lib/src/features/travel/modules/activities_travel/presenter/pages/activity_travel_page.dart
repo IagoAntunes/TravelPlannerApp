@@ -8,8 +8,10 @@ import 'package:travelplannerapp/src/features/travel/domain/model/travel_model.d
 import 'package:travelplannerapp/src/features/travel/modules/activities_travel/presenter/widgets/create_activity_widget.dart';
 
 import '../../../../../../../core/style/app_style_text.dart';
+import '../../../../../../../core/widgets/bottom_navigation_bar_widget.dart';
 import '../blocs/activity_travel_cubit.dart';
 import '../states/activity_travel_state.dart';
+import '../widgets/create_link_bottom_sheet_widget.dart';
 
 class ActivityTravelPage extends StatefulWidget {
   const ActivityTravelPage({
@@ -155,10 +157,14 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                                     child: CircularProgressIndicator(),
                                   ),
                                 );
-                                var deleted =
-                                    await _cubit.deleteTravel(widget.travel.id);
-                                Navigator.pop(context);
-                                Navigator.pop(context, deleted);
+                                await _cubit
+                                    .deleteTravel(widget.travel.id)
+                                    .then(
+                                  (value) {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context, value);
+                                  },
+                                );
                               },
                               child: Row(
                                 children: [
@@ -453,8 +459,55 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                               ],
                             ),
                           EnumActivityTravelType.details => Column(
+                              mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Text(
+                                  "Links Importantes",
+                                  style: AppStyleText.headingLg(context)
+                                      .copyWith(color: AppStyleColors.zinc50),
+                                ),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: widget.travel.links?.length ?? 0,
+                                  itemBuilder: (context, index) => ListTile(
+                                    contentPadding: EdgeInsets.zero,
+                                    title: Text(
+                                      widget.travel.links![index].name,
+                                      style: AppStyleText.headingXs(context)
+                                          .copyWith(
+                                              color: AppStyleColors.zinc100),
+                                    ),
+                                    subtitle: Text(
+                                      widget.travel.links![index].url,
+                                      style: AppStyleText.bodyMd(context)
+                                          .copyWith(
+                                              color: AppStyleColors.zinc400),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.link,
+                                      color: AppStyleColors.zinc400,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: CButton.icon(
+                                    text: 'Cadastrar novo link',
+                                    textColor: AppStyleColors.zinc200,
+                                    icon: Icons.add_outlined,
+                                    iconColor: AppStyleColors.zinc200,
+                                    backgroundColor: AppStyleColors.zinc800,
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        builder: (context) =>
+                                            const CreateLinkModalBottomSheet(),
+                                      );
+                                    },
+                                  ),
+                                ),
                                 Divider(
                                   color: AppStyleColors.zinc800,
                                 ),
@@ -463,35 +516,33 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                                   style: AppStyleText.headingLg(context)
                                       .copyWith(color: AppStyleColors.zinc50),
                                 ),
-                                Expanded(
-                                    child: ListView.builder(
+                                ListView.builder(
+                                  shrinkWrap: true,
                                   itemCount: widget.travel.guests?.length ?? 0,
-                                  itemBuilder: (context, index) => Container(
-                                    child: ListTile(
-                                      contentPadding: EdgeInsets.zero,
-                                      title: Text(
-                                        widget.travel.guests![index].name,
-                                        style: AppStyleText.headingXs(context)
-                                            .copyWith(
-                                                color: AppStyleColors.zinc100),
+                                  itemBuilder: (context, index) => ListTile(
+                                    contentPadding: EdgeInsets.zero,
+                                    title: Text(
+                                      widget.travel.guests![index].name,
+                                      style: AppStyleText.headingXs(context)
+                                          .copyWith(
+                                              color: AppStyleColors.zinc100),
+                                    ),
+                                    subtitle: Text(
+                                      widget.travel.guests![index].email,
+                                      style: AppStyleText.bodyMd(context)
+                                          .copyWith(
+                                              color: AppStyleColors.zinc400),
+                                    ),
+                                    trailing: Icon(
+                                      _statusIconGuest(
+                                        widget.travel.guests![index].status,
                                       ),
-                                      subtitle: Text(
-                                        widget.travel.guests![index].email,
-                                        style: AppStyleText.bodyMd(context)
-                                            .copyWith(
-                                                color: AppStyleColors.zinc400),
-                                      ),
-                                      trailing: Icon(
-                                        _statusIconGuest(
-                                          widget.travel.guests![index].status,
-                                        ),
-                                        color: _statusColorGuest(
-                                          widget.travel.guests![index].status,
-                                        ),
+                                      color: _statusColorGuest(
+                                        widget.travel.guests![index].status,
                                       ),
                                     ),
                                   ),
-                                ))
+                                )
                               ],
                             ),
                         },
@@ -504,72 +555,7 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
           ),
         ),
       ),
-      bottomNavigationBar:
-          BlocBuilder<ActivityTravelCubit, IActivityTravelState>(
-        bloc: _cubit,
-        builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 32, right: 32, bottom: 16),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              decoration: BoxDecoration(
-                color: AppStyleColors.zinc900,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: CButton.icon(
-                      text: "Atividades",
-                      icon: Icons.date_range,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      iconColor: state.type == EnumActivityTravelType.activities
-                          ? null
-                          : AppStyleColors.zinc200,
-                      textColor: state.type == EnumActivityTravelType.activities
-                          ? null
-                          : AppStyleColors.zinc200,
-                      backgroundColor:
-                          state.type == EnumActivityTravelType.activities
-                              ? null
-                              : AppStyleColors.zinc800,
-                      onPressed: () {
-                        _cubit.changeActivityTravelType(
-                          EnumActivityTravelType.activities,
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: CButton.icon(
-                      text: "Detalhes",
-                      icon: Icons.info_outline,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      iconColor: state.type == EnumActivityTravelType.details
-                          ? null
-                          : AppStyleColors.zinc200,
-                      textColor: state.type == EnumActivityTravelType.details
-                          ? null
-                          : AppStyleColors.zinc200,
-                      backgroundColor:
-                          state.type == EnumActivityTravelType.details
-                              ? null
-                              : AppStyleColors.zinc800,
-                      onPressed: () {
-                        _cubit.changeActivityTravelType(
-                          EnumActivityTravelType.details,
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+      bottomNavigationBar: BottomNavigationBarWidget(cubit: _cubit),
     );
   }
 }
