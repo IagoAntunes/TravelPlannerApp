@@ -1,3 +1,4 @@
+import 'package:travelplannerapp/core/utils/base_repository_result.dart';
 import 'package:travelplannerapp/core/utils/base_service_response.dart';
 import 'package:travelplannerapp/src/features/travel/domain/adapter/travel_adapter.dart';
 import 'package:travelplannerapp/src/features/travel/domain/model/travel_model.dart';
@@ -112,6 +113,23 @@ class TravelRepository extends ITravelsRepository {
     } else {
       response as ErrorResponseData;
       return CreateActivityResult.failure(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+      );
+    }
+  }
+
+  @override
+  Future<IBaseResult> deleteActivity(int activityId) async {
+    var response = await _travelDataSource.deleteActivity(activityId);
+    if (response is SuccessResponseData) {
+      return BaseResult.success(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+      );
+    } else {
+      response as ErrorResponseData;
+      return BaseResult.failure(
         statusCode: response.statusCode,
         statusMsg: response.statusMsg,
       );

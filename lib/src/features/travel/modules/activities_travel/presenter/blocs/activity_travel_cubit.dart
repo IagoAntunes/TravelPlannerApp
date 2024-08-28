@@ -19,6 +19,14 @@ class ActivityTravelCubit extends Cubit<IActivityTravelState> {
 
   Map<String, List<ActivityModel>> groupedActivities = {};
 
+  List<ActivityModel> get activities {
+    List<ActivityModel> activities = [];
+    for (var activitiesList in groupedActivities.values) {
+      activities.addAll(activitiesList);
+    }
+    return activities;
+  }
+
   void fetchActivities(int travelId) async {
     emit(LoadingActivityTravelState(type: state.type));
     final result = await _travelRepository.fetchActivities(travelId);
@@ -79,6 +87,23 @@ class ActivityTravelCubit extends Cubit<IActivityTravelState> {
       ));
     } else {
       emit(IdleActivityTravelState(type: type));
+    }
+  }
+
+  void deleteActivity(int activityId) async {
+    //emit(LoadingActivityTravelState(type: state.type));
+    state as SuccessActivityTravelState;
+    groupedActivities.forEach((key, value) {
+      value.removeWhere((element) => element.id == activityId);
+    });
+    final result = await _travelRepository.deleteActivity(activityId);
+    if (result.isSuccess) {
+      emit(SuccessActivityTravelState(
+        type: state.type,
+        groupedActivities: groupedActivities,
+      ));
+    } else {
+      emit(FailureActivityTravelState(type: state.type));
     }
   }
 }

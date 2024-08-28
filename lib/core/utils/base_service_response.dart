@@ -69,7 +69,14 @@ class ErrorResponseData extends IResponseData {
 class ResponseData {
   ResponseData._();
 
-  static SuccessResponseData success(Map<String, dynamic> responseData) {
+  static SuccessResponseData success(dynamic responseData, int statusCode) {
+    if (statusCode == 204) {
+      return SuccessResponseData(
+        '200',
+        'OK',
+        data: {},
+      );
+    }
     return SuccessResponseData.fromMap(responseData);
   }
 
@@ -77,7 +84,7 @@ class ResponseData {
     return ErrorResponseData.fromMap(responseData);
   }
 
-  static ErrorResponseData errorCatch(Map<String, dynamic> responseData) {
-    return ErrorResponseData.fromMap(responseData);
+  static ErrorResponseData errorCatch() {
+    return ErrorResponseData.fromMap({});
   }
 }

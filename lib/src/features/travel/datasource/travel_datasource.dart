@@ -15,7 +15,10 @@ class TravelDataSource extends ITravelDataSource {
     try {
       final response = await _httpService.get(AppRoutesApi.getTravelByUser);
       if (response.statusCode == HttpStatus.ok) {
-        return ResponseData.success(response.data);
+        return ResponseData.success(
+          response.data,
+          response.statusCode!,
+        );
       } else {
         return ResponseData.error(response.data);
       }
@@ -33,7 +36,10 @@ class TravelDataSource extends ITravelDataSource {
       );
 
       if (response.statusCode == HttpStatus.created) {
-        return ResponseData.success(response.data);
+        return ResponseData.success(
+          response.data,
+          response.statusCode!,
+        );
       } else {
         return ResponseData.error(response.data);
       }
@@ -49,7 +55,10 @@ class TravelDataSource extends ITravelDataSource {
         "${AppRoutesApi.getActivitiesByTravel}/$travelId",
       );
       if (response.statusCode == HttpStatus.ok) {
-        return ResponseData.success(response.data);
+        return ResponseData.success(
+          response.data,
+          response.statusCode!,
+        );
       } else {
         return ResponseData.error(response.data);
       }
@@ -69,7 +78,10 @@ class TravelDataSource extends ITravelDataSource {
         data: request.toMap(),
       );
       if (response.statusCode == HttpStatus.created) {
-        return ResponseData.success(response.data);
+        return ResponseData.success(
+          response.data,
+          response.statusCode!,
+        );
       } else {
         return ResponseData.error(response.data);
       }
@@ -78,6 +90,22 @@ class TravelDataSource extends ITravelDataSource {
         'statusCode': '500',
         'statusMsg': 'Internal Server Error',
       });
+    }
+  }
+
+  @override
+  Future<IResponseData> deleteActivity(int activityId) async {
+    try {
+      final response = await _httpService.delete(
+        '${AppRoutesApi.deleteActivity}/$activityId',
+      );
+      if (response.statusCode == HttpStatus.noContent) {
+        return ResponseData.success(response.data, response.statusCode!);
+      } else {
+        return ResponseData.error(response.data);
+      }
+    } catch (e) {
+      return ResponseData.errorCatch();
     }
   }
 }

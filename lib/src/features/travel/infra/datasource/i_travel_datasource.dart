@@ -6,5 +6,6 @@ abstract class ITravelDataSource {
   Future<IResponseData> fetchTravels();
   Future<IResponseData> fetchActivitiesByTravel(int travelId);
   Future<IResponseData> createActivity(CreateActivityRequest request);
+  Future<IResponseData> deleteActivity(int activityId);
   Future<IResponseData> createTravel(CreateTravelRequest request);
 }

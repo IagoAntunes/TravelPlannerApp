@@ -236,66 +236,67 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                                                     const SizedBox(height: 12),
                                             itemBuilder:
                                                 (_, indexDayActivity) =>
-                                                    Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 16,
-                                                vertical: 8,
+                                                    Dismissible(
+                                              direction:
+                                                  DismissDirection.startToEnd,
+                                              background: Container(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .error,
+                                                alignment: Alignment.centerLeft,
+                                                child: Icon(
+                                                  Icons.delete_outline,
+                                                  color: AppStyleColors.white,
+                                                ),
                                               ),
-                                              decoration: BoxDecoration(
-                                                color: AppStyleColors.zinc900,
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        activityHasAlreadyPassed(
-                                                          successState
-                                                              .groupedActivities[
-                                                                  dateList[
-                                                                      indexDate]]!
-                                                              .elementAt(
-                                                                  indexDayActivity)
-                                                              .date,
-                                                        )
-                                                            ? Icons
-                                                                .check_circle_outline
-                                                            : Icons
-                                                                .radio_button_unchecked,
-                                                        color:
-                                                            activityHasAlreadyPassed(
-                                                          successState
-                                                              .groupedActivities[
-                                                                  dateList[
-                                                                      indexDate]]!
-                                                              .elementAt(
-                                                                  indexDayActivity)
-                                                              .date,
-                                                        )
-                                                                ? AppStyleColors
-                                                                    .zinc200
-                                                                : AppStyleColors
-                                                                    .lime300,
-                                                      ),
-                                                      const SizedBox(width: 16),
-                                                      Text(
-                                                        successState
-                                                            .groupedActivities[
-                                                                dateList[
-                                                                    indexDate]]!
-                                                            .elementAt(
-                                                                indexDayActivity)
-                                                            .name,
-                                                        style:
-                                                            AppStyleText.bodyMd(
-                                                                    context)
-                                                                .copyWith(
+                                              key: Key(successState
+                                                  .groupedActivities[
+                                                      dateList[indexDate]]!
+                                                  .elementAt(indexDayActivity)
+                                                  .id
+                                                  .toString()),
+                                              onDismissed: (direction) {
+                                                _cubit.deleteActivity(
+                                                  successState
+                                                      .groupedActivities[
+                                                          dateList[indexDate]]!
+                                                      .elementAt(
+                                                          indexDayActivity)
+                                                      .id,
+                                                );
+                                              },
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 16,
+                                                  vertical: 8,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: AppStyleColors.zinc900,
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          activityHasAlreadyPassed(
+                                                            successState
+                                                                .groupedActivities[
+                                                                    dateList[
+                                                                        indexDate]]!
+                                                                .elementAt(
+                                                                    indexDayActivity)
+                                                                .date,
+                                                          )
+                                                              ? Icons
+                                                                  .check_circle_outline
+                                                              : Icons
+                                                                  .radio_button_unchecked,
                                                           color:
                                                               activityHasAlreadyPassed(
                                                             successState
@@ -307,35 +308,66 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                                                                 .date,
                                                           )
                                                                   ? AppStyleColors
-                                                                      .zinc400
+                                                                      .zinc200
                                                                   : AppStyleColors
-                                                                      .zinc100,
+                                                                      .lime300,
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Text(
-                                                    "${successState.groupedActivities[dateList[indexDate]]!.elementAt(indexDayActivity).date.split(' ')[1]}h",
-                                                    style: AppStyleText.bodyMd(
-                                                            context)
-                                                        .copyWith(
-                                                      color:
-                                                          activityHasAlreadyPassed(
-                                                        successState
-                                                            .groupedActivities[
-                                                                dateList[
-                                                                    indexDate]]!
-                                                            .elementAt(
-                                                                indexDayActivity)
-                                                            .date,
-                                                      )
-                                                              ? AppStyleColors
-                                                                  .zinc400
-                                                              : AppStyleColors
-                                                                  .zinc100,
+                                                        const SizedBox(
+                                                            width: 16),
+                                                        Text(
+                                                          successState
+                                                              .groupedActivities[
+                                                                  dateList[
+                                                                      indexDate]]!
+                                                              .elementAt(
+                                                                  indexDayActivity)
+                                                              .name,
+                                                          style: AppStyleText
+                                                                  .bodyMd(
+                                                                      context)
+                                                              .copyWith(
+                                                            color:
+                                                                activityHasAlreadyPassed(
+                                                              successState
+                                                                  .groupedActivities[
+                                                                      dateList[
+                                                                          indexDate]]!
+                                                                  .elementAt(
+                                                                      indexDayActivity)
+                                                                  .date,
+                                                            )
+                                                                    ? AppStyleColors
+                                                                        .zinc400
+                                                                    : AppStyleColors
+                                                                        .zinc100,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ),
-                                                ],
+                                                    Text(
+                                                      "${successState.groupedActivities[dateList[indexDate]]!.elementAt(indexDayActivity).date.split(' ')[1]}h",
+                                                      style:
+                                                          AppStyleText.bodyMd(
+                                                                  context)
+                                                              .copyWith(
+                                                        color:
+                                                            activityHasAlreadyPassed(
+                                                          successState
+                                                              .groupedActivities[
+                                                                  dateList[
+                                                                      indexDate]]!
+                                                              .elementAt(
+                                                                  indexDayActivity)
+                                                              .date,
+                                                        )
+                                                                ? AppStyleColors
+                                                                    .zinc400
+                                                                : AppStyleColors
+                                                                    .zinc100,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           )

@@ -20,7 +20,10 @@ class AuthDataSource implements IAuthDataSource {
       );
 
       if (response.statusCode == HttpStatus.ok) {
-        return ResponseData.success(response.data);
+        return ResponseData.success(
+          response.data,
+          response.statusCode!,
+        );
       } else {
         return ResponseData.error(response.data);
       }
@@ -38,7 +41,10 @@ class AuthDataSource implements IAuthDataSource {
       );
 
       if (response.statusCode == HttpStatus.ok) {
-        return ResponseData.success(response.data);
+        return ResponseData.success(
+          response.data,
+          response.statusCode!,
+        );
       } else {
         return ResponseData.error(response.data);
       }

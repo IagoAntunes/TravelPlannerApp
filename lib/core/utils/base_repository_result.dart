@@ -9,3 +9,16 @@ abstract class IBaseResult {
     required this.statusMsg,
   });
 }
+
+class BaseResult extends IBaseResult {
+  BaseResult.success({
+    super.isSuccess = true,
+    required super.statusCode,
+    required super.statusMsg,
+  });
+  BaseResult.failure({
+    super.isSuccess = false,
+    required super.statusCode,
+    required super.statusMsg,
+  });
+}
