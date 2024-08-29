@@ -1,12 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travelplannerapp/src/features/travel/domain/repository/i_link_repository.dart';
-import 'package:travelplannerapp/src/features/travel/modules/links_travel/presenter/states/create_link_travel_state.dart';
 
-class LinksTravelCubit extends Cubit<ICreateLinkTravelState> {
+import 'states/links_travel_state.dart';
+
+class LinksTravelCubit extends Cubit<ILinksTravelState> {
   LinksTravelCubit({
     required ILinkRepository linkRepository,
   })  : _linkRepository = linkRepository,
-        super(IdleCreateLinkTravelState());
+        super(IdleLinksTravelState());
 
   final ILinkRepository _linkRepository;
 
@@ -21,6 +22,14 @@ class LinksTravelCubit extends Cubit<ICreateLinkTravelState> {
     } else {
       emit(FailureCreateLinkTravelListener());
     }
-    emit(IdleCreateLinkTravelState());
+    emit(IdleLinksTravelState());
+  }
+
+  void deleteLink(int linkId) async {
+    //
+  }
+
+  void emitIdle() {
+    emit(IdleLinksTravelState());
   }
 }

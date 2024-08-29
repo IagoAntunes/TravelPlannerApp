@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travelplannerapp/src/features/travel/presenter/states/travel_info_state.dart';
 
-import '../../src/features/travel/modules/activities_travel/presenter/blocs/activity_travel_cubit.dart';
-import '../../src/features/travel/modules/activities_travel/presenter/states/activity_travel_state.dart';
+import '../../src/features/travel/presenter/blocs/travel_info_cubit.dart';
 import '../components/c_button.dart';
 import '../style/app_style_colors.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
   const BottomNavigationBarWidget({
     super.key,
-    required ActivityTravelCubit cubit,
-  }) : _cubit = cubit;
+    required this.travelInfoCubit,
+  });
 
-  final ActivityTravelCubit _cubit;
+  final TravelInfoCubit travelInfoCubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ActivityTravelCubit, IActivityTravelState>(
-      bloc: _cubit,
+    return BlocBuilder<TravelInfoCubit, ITravelInfoState>(
+      bloc: travelInfoCubit,
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(left: 32, right: 32, bottom: 16),
@@ -46,7 +46,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
                             ? null
                             : AppStyleColors.zinc800,
                     onPressed: () {
-                      _cubit.changeActivityTravelType(
+                      travelInfoCubit.changeActivityTravelType(
                         EnumActivityTravelType.activities,
                       );
                     },
@@ -69,7 +69,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
                             ? null
                             : AppStyleColors.zinc800,
                     onPressed: () {
-                      _cubit.changeActivityTravelType(
+                      travelInfoCubit.changeActivityTravelType(
                         EnumActivityTravelType.details,
                       );
                     },

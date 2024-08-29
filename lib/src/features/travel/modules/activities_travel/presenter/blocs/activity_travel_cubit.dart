@@ -5,15 +5,10 @@ import 'package:travelplannerapp/src/features/travel/modules/activities_travel/p
 
 import '../../../../domain/model/activity_model.dart';
 
-enum EnumActivityTravelType {
-  activities,
-  details,
-}
-
 class ActivityTravelCubit extends Cubit<IActivityTravelState> {
   ActivityTravelCubit({required ITravelsRepository travelRepository})
       : _travelRepository = travelRepository,
-        super(IdleActivityTravelState(type: EnumActivityTravelType.activities));
+        super(IdleActivityTravelState());
 
   final ITravelsRepository _travelRepository;
 
@@ -27,18 +22,9 @@ class ActivityTravelCubit extends Cubit<IActivityTravelState> {
     return activities;
   }
 
-  Future<bool> deleteTravel(int travelId) async {
-    var result = await _travelRepository.deleteTravel(travelId);
-    if (result.isSuccess) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   void fetchActivities(int travelId) async {
     groupedActivities.clear();
-    emit(LoadingActivityTravelState(type: state.type));
+    emit(LoadingActivityTravelState());
     final result = await _travelRepository.fetchActivities(travelId);
     for (var activity in result.activities) {
       if (groupedActivities.containsKey(activity.date.split(' ')[0])) {
@@ -53,16 +39,15 @@ class ActivityTravelCubit extends Cubit<IActivityTravelState> {
     if (result.isSuccess) {
       emit(SuccessActivityTravelState(
         groupedActivities: groupedActivities,
-        type: state.type,
       ));
     } else {
-      emit(FailureActivityTravelState(type: state.type));
+      emit(FailureActivityTravelState());
     }
   }
 
   Future<void> createActivity(
       String name, String date, String time, int travelId) async {
-    emit(LoadingActivityTravelState(type: state.type));
+    emit(LoadingActivityTravelState());
 
     List<String> dateParts = date.split('/');
     int day = int.parse(dateParts[0]);
@@ -81,22 +66,9 @@ class ActivityTravelCubit extends Cubit<IActivityTravelState> {
       travelId,
     );
     if (result.isSuccess) {
-      emit(CreatedActivityTravelListener(type: state.type));
+      emit(CreatedActivityTravelListener());
     } else {
-      emit(FailureActivityTravelState(type: state.type));
-    }
-  }
-
-  void changeActivityTravelType(EnumActivityTravelType type) {
-    if (state is SuccessActivityTravelState) {
-      state.type = type;
-      emit(SuccessActivityTravelState(
-        groupedActivities:
-            (state as SuccessActivityTravelState).groupedActivities,
-        type: type,
-      ));
-    } else {
-      emit(IdleActivityTravelState(type: type));
+      emit(FailureActivityTravelState());
     }
   }
 
@@ -109,11 +81,10 @@ class ActivityTravelCubit extends Cubit<IActivityTravelState> {
     final result = await _travelRepository.deleteActivity(activityId);
     if (result.isSuccess) {
       emit(SuccessActivityTravelState(
-        type: state.type,
         groupedActivities: groupedActivities,
       ));
     } else {
-      emit(FailureActivityTravelState(type: state.type));
+      emit(FailureActivityTravelState());
     }
   }
 }

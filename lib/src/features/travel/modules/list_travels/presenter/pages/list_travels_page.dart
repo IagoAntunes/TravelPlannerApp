@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:travelplannerapp/src/features/travel/modules/activities_travel/presenter/pages/activity_travel_page.dart';
+import 'package:travelplannerapp/src/features/travel/presenter/travel_info_page.dart';
 import 'package:travelplannerapp/src/features/travel/modules/list_travels/presenter/blocs/list_travels_cubit.dart';
 import 'package:travelplannerapp/src/features/travel/modules/list_travels/presenter/states/list_travels_state.dart';
 import '../../../../../../../core/style/app_style_colors.dart';
@@ -81,7 +81,7 @@ class _ListTravelsPageState extends State<ListTravelsPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ActivityTravelPage(
+                                    builder: (context) => TravelInfoPage(
                                       travel: successState.travels[index],
                                     ),
                                   ),

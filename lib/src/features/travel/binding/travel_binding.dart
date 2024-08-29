@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:travelplannerapp/src/features/travel/datasource/travel_datasource.dart';
 import 'package:travelplannerapp/src/features/travel/infra/datasource/i_travel_datasource.dart';
 import 'package:travelplannerapp/src/features/travel/modules/activities_travel/presenter/blocs/activity_travel_cubit.dart';
+import 'package:travelplannerapp/src/features/travel/presenter/blocs/travel_info_cubit.dart';
 
 import '../domain/repository/i_travel_repository.dart';
 import '../infra/repository/travel_repository.dart';
@@ -31,6 +32,11 @@ class TravelBinding {
         ));
     getIt.registerSingleton(
       ListTravelsCubit(
+        travelRepository: getIt(),
+      ),
+    );
+    getIt.registerFactory(
+      () => TravelInfoCubit(
         travelRepository: getIt(),
       ),
     );

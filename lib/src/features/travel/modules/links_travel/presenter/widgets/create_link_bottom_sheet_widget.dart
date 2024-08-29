@@ -7,7 +7,7 @@ import '../../../../../../../core/components/c_button.dart';
 import '../../../../../../../core/components/c_textformfield.dart';
 import '../../../../../../../core/style/app_style_colors.dart';
 import '../../../../../../../core/style/app_style_text.dart';
-import '../../../links_travel/presenter/states/create_link_travel_state.dart';
+import '../states/links_travel_state.dart';
 
 class CreateLinkModalBottomSheet extends StatefulWidget {
   const CreateLinkModalBottomSheet({
@@ -36,7 +36,7 @@ class _CreateLinkModalBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LinksTravelCubit, ICreateLinkTravelState>(
+    return BlocConsumer<LinksTravelCubit, ILinksTravelState>(
       bloc: _cubit,
       listener: (context, state) {
         if (state is SuccessCreateLinkTravelListener) {
@@ -44,8 +44,8 @@ class _CreateLinkModalBottomSheetState
           Navigator.pop(context, createdLink);
         }
       },
-      listenWhen: (previous, current) => current is ICreateLinkTravelListener,
-      buildWhen: (previous, current) => current is! ICreateLinkTravelListener,
+      listenWhen: (previous, current) => current is ILinksTravelListener,
+      buildWhen: (previous, current) => current is! ILinksTravelListener,
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.only(

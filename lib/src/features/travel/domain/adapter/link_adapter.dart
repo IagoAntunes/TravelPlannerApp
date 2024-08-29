@@ -10,6 +10,7 @@ class LinkAdapter {
 
   static LinkModel fromMap(Map<String, dynamic> map) {
     return LinkModel(
+      id: map['id'],
       name: map['name'],
       url: map['url'],
     );
