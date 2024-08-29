@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -12,6 +15,7 @@ import 'package:travelplannerapp/src/features/travel/binding/link_travel_binding
 import 'package:travelplannerapp/src/features/travel/binding/travel_binding.dart';
 import 'package:travelplannerapp/src/features/home/presenter/bindings/home_binding.dart';
 
+import 'firebase_options.dart';
 import 'services/database/external/sharedPreferences/shared_preferences_service.dart';
 import 'src/features/auth/presenter/bindings/auth_binding.dart';
 import 'src/features/auth/presenter/pages/login_page.dart';
@@ -20,6 +24,15 @@ import 'src/features/home/presenter/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
   HttpOverrides.global = MyHttpOverrides();
   await AppBindings.setupBindings();
   HomeBinding.setUpHomeBindings();
