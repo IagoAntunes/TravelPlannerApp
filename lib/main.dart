@@ -7,6 +7,7 @@ import 'package:travelplannerapp/core/binding/app_binding.dart';
 import 'package:travelplannerapp/core/theme/app_theme.dart';
 import 'package:travelplannerapp/services/database/external/sharedPreferences/shared_preferences_keys.dart';
 import 'package:travelplannerapp/src/features/auth/presenter/blocs/auth_cubit.dart';
+import 'package:travelplannerapp/src/features/travel/binding/guest_travel_binding.dart';
 import 'package:travelplannerapp/src/features/travel/binding/link_travel_binding.dart';
 import 'package:travelplannerapp/src/features/travel/binding/travel_binding.dart';
 import 'package:travelplannerapp/src/features/home/presenter/bindings/home_binding.dart';
@@ -25,6 +26,7 @@ void main() async {
   AuthBindings.setupAuthBindings();
   TravelBinding.setUpTravelBinding();
   LinkTravelBinding.setUpLinkTravelBinding();
+  GuestTravelBinding.setUpGuestTravelBinding();
 
   final prefs = GetIt.I.get<SharedPreferencesService>();
 

@@ -13,11 +13,16 @@ class AuthInterceptor extends Interceptor {
   @override
   Future<void> onError(
       DioException err, ErrorInterceptorHandler handler) async {
-    // Verifica se o erro é um 403
+    // Verifica se o erro é um 403 e se a mensagem de erro indica que o token expirou
     if (err.response?.realUri.path.contains('refreshToken') ?? false) {
       return handler.reject(err);
     }
-    if (err.response?.statusCode == 403) {
+    if (err.response?.statusCode == 403 && _isTokenExpiredError(err)) {
+      // Verifica se já tentamos o refresh do token para esta requisição
+      if (err.requestOptions.headers['isRetry'] == true) {
+        return handler.reject(err);
+      }
+
       // Tenta o refresh do token
       try {
         var token = await _secureStorage.readData(key: SecureStorageKeys.token);
@@ -37,6 +42,8 @@ class AuthInterceptor extends Interceptor {
           // Atualiza o header de Authorization com o novo token
           err.requestOptions.headers['Authorization'] =
               'Bearer $newAccessToken';
+          // Marca a requisição como retry
+          err.requestOptions.headers['isRetry'] = true;
 
           // Reenvia a requisição original com o novo token
           final opts = Options(
@@ -61,8 +68,15 @@ class AuthInterceptor extends Interceptor {
         return handler.reject(err);
       }
     } else {
-      // Se não for 403, propaga o erro normalmente
+      // Se não for 403 ou não for um erro de token expirado, propaga o erro normalmente
       return handler.reject(err);
     }
+  }
+
+  bool _isTokenExpiredError(DioException err) {
+    // Verifique a mensagem de erro ou código de erro específico para determinar se o token expirou
+    // Isso depende de como sua API indica um token expirado
+    // Exemplo:
+    return err.response?.data['message'] == 'Token expired';
   }
 }

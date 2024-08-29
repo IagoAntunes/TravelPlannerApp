@@ -29,6 +29,7 @@ class LinksTravelWidget extends StatelessWidget {
         if (state is SuccessDeletedLinkTravelListener) {
           travelInfoCubit.travel.links!
               .removeWhere((element) => element.id == state.linkId);
+          _linksTravelCubit.emitIdle();
         }
       },
       listenWhen: (context, state) => state is ILinksTravelListener,

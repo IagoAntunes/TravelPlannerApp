@@ -18,4 +18,8 @@ class AppRoutesApi {
   //link
   static const String createLink = "$baseUrl/link/create";
   static const String deleteLink = "$baseUrl/link/delete";
+
+  //guest
+  static const String createGuest = "$baseUrl/guest/create";
+  static const String deleteGuest = "$baseUrl/guest/delete";
 }
