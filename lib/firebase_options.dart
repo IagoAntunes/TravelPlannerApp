@@ -57,7 +57,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCnRdQOWRwiIYDA_gjcAeDpmOB27SshoYw',
-    appId: '1:586746644154:android:bf60bf1ab5719368672483',
+    appId: '1:586746644154:android:8881be776f1676e9672483',
     messagingSenderId: '586746644154',
     projectId: 'travel-planner-app-server',
     storageBucket: 'travel-planner-app-server.appspot.com',
@@ -71,4 +71,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'travel-planner-app-server.appspot.com',
     iosBundleId: 'com.example.travelplannerapp',
   );
+
 }

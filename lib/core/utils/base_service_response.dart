@@ -84,6 +84,17 @@ class ResponseData {
     return ErrorResponseData.fromMap(responseData);
   }
 
+  static ErrorResponseData baseError() {
+    return ErrorResponseData.fromMap({
+      'statusCode': '500',
+      'statusMsg': 'Internal Server Error',
+      'apiPath': '',
+      'errorCode': '500',
+      'errorMessage': 'Internal Server Error',
+      'errorTime': DateTime.now().toString(),
+    });
+  }
+
   static ErrorResponseData errorCatch() {
     return ErrorResponseData.fromMap({});
   }

@@ -23,6 +23,9 @@ class TravelDataSource extends ITravelDataSource {
         return ResponseData.error(response.data);
       }
     } on DioException catch (e) {
+      if (e.response == null) {
+        return ResponseData.baseError();
+      }
       return ResponseData.error(e.response!.data);
     }
   }

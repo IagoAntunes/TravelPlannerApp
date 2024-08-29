@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 import 'package:travelplannerapp/core/binding/app_binding.dart';
 import 'package:travelplannerapp/core/theme/app_theme.dart';
 import 'package:travelplannerapp/services/database/external/sharedPreferences/shared_preferences_keys.dart';
+import 'package:travelplannerapp/services/notification/firebase_messaging_service.dart';
 import 'package:travelplannerapp/src/features/auth/presenter/blocs/auth_cubit.dart';
 import 'package:travelplannerapp/src/features/travel/binding/guest_travel_binding.dart';
 import 'package:travelplannerapp/src/features/travel/binding/link_travel_binding.dart';
@@ -42,7 +43,8 @@ void main() async {
   GuestTravelBinding.setUpGuestTravelBinding();
 
   final prefs = GetIt.I.get<SharedPreferencesService>();
-
+  final firebaseMessagingService = GetIt.I.get<FirebaseMessagingService>();
+  firebaseMessagingService.initialize();
   var isAuthenticated =
       await prefs.getData(SharedPreferencesKeys.isAuthenticated) ?? false;
 
@@ -67,7 +69,7 @@ class MyApp extends StatelessWidget {
         bloc: _authCubit,
         builder: (context, state) {
           if (state.isAuthenticated) {
-            return HomePage();
+            return const HomePage();
           }
           return LoginPage();
         },

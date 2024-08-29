@@ -10,6 +10,8 @@ import 'package:travelplannerapp/services/storage/infra/secure_storage_imp.dart'
 import 'package:travelplannerapp/src/features/auth/presenter/blocs/auth_cubit.dart';
 
 import '../../services/database/external/sharedPreferences/shared_preferences_service.dart';
+import '../../services/notification/firebase_messaging_service.dart';
+import '../../services/notification/notification_service.dart';
 
 class AppBindings {
   static Future<void> setupBindings() async {
@@ -31,8 +33,18 @@ class AppBindings {
     );
 
     var dio = Dio();
+    dio.options = BaseOptions(
+      sendTimeout: const Duration(seconds: 10),
+      connectTimeout: const Duration(seconds: 10),
+    );
 
     getIt.registerSingleton<Dio>(dio);
+
+    getIt.registerSingleton(NotificationService());
+    getIt.registerSingleton(FirebaseMessagingService(
+      getIt<NotificationService>(),
+    ));
+
     dio.interceptors.add(AuthenticationInterceptor(secureStorage: getIt()));
     dio.interceptors.add(AuthInterceptor(
       dio: getIt(),
