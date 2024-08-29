@@ -1,3 +1,4 @@
+import '../../../../../core/utils/base_repository_result.dart';
 import '../result/create_link_result.dart';
 
 abstract class ILinkRepository {
@@ -6,4 +7,5 @@ abstract class ILinkRepository {
     String url,
     int travelId,
   );
+  Future<IBaseResult> deleteLink(int linkId);
 }

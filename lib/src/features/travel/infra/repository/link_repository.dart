@@ -1,3 +1,4 @@
+import 'package:travelplannerapp/core/utils/base_repository_result.dart';
 import 'package:travelplannerapp/src/features/travel/domain/repository/i_link_repository.dart';
 import 'package:travelplannerapp/src/features/travel/infra/datasource/i_link_datasource.dart';
 
@@ -32,6 +33,23 @@ class LinkRepository extends ILinkRepository {
     } else {
       response as ErrorResponseData;
       return CreateLinkResult.failure(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+      );
+    }
+  }
+
+  @override
+  Future<IBaseResult> deleteLink(int linkId) async {
+    var response = await _linkDataSource.deleteLink(linkId);
+    if (response is SuccessResponseData) {
+      return BaseResult.success(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+      );
+    } else {
+      response as ErrorResponseData;
+      return BaseResult.failure(
         statusCode: response.statusCode,
         statusMsg: response.statusMsg,
       );

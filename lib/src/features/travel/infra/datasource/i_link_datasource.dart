@@ -3,4 +3,5 @@ import '../../domain/request/create_link_request.dart';
 
 abstract class ILinkDataSource {
   Future<IResponseData> createLink(CreateLinkRequest request);
+  Future<IResponseData> deleteLink(int linkId);
 }

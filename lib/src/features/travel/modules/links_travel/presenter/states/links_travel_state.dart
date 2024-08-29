@@ -14,6 +14,14 @@ class SuccessCreateLinkTravelListener extends ILinksTravelListener {
   final LinkModel link;
 }
 
+class SuccessDeletedLinkTravelListener extends ILinksTravelListener {
+  SuccessDeletedLinkTravelListener({
+    required this.linkId,
+  });
+
+  int linkId;
+}
+
 class FailureCreateLinkTravelListener extends ILinksTravelListener {}
 
 class IdleLinksTravelState extends ILinksTravelState {}

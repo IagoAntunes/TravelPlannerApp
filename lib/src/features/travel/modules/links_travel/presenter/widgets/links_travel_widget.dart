@@ -25,8 +25,11 @@ class LinksTravelWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<LinksTravelCubit, ILinksTravelState>(
       bloc: _linksTravelCubit,
-      listener: (context, state) {
-        //
+      listener: (context, state) async {
+        if (state is SuccessDeletedLinkTravelListener) {
+          travelInfoCubit.travel.links!
+              .removeWhere((element) => element.id == state.linkId);
+        }
       },
       listenWhen: (context, state) => state is ILinksTravelListener,
       buildWhen: (context, state) => state is! ILinksTravelListener,
@@ -39,6 +42,27 @@ class LinksTravelWidget extends StatelessWidget {
               style: AppStyleText.headingLg(context)
                   .copyWith(color: AppStyleColors.zinc50),
             ),
+            if (travelInfoCubit.travel.links?.isEmpty ?? true)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.link_outlined,
+                        color: AppStyleColors.zinc400,
+                        size: 32,
+                      ),
+                      Text(
+                        "Nenhum link adicionado",
+                        style: AppStyleText.bodyMd(context)
+                            .copyWith(color: AppStyleColors.zinc400),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ConstrainedBox(
               constraints: BoxConstraints(
                 maxHeight: MediaQuery.sizeOf(context).height * 0.4,
@@ -58,7 +82,8 @@ class LinksTravelWidget extends StatelessWidget {
                   ),
                   key: Key(travelInfoCubit.travel.links![index].id.toString()),
                   onDismissed: (direction) {
-                    //
+                    _linksTravelCubit
+                        .deleteLink(travelInfoCubit.travel.links![index].id);
                   },
                   child: ListTile(
                     contentPadding: EdgeInsets.zero,

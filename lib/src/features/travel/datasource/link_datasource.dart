@@ -26,4 +26,20 @@ class LinkDataSource implements ILinkDataSource {
       return ResponseData.error(e.response!.data);
     }
   }
+
+  @override
+  Future<IResponseData> deleteLink(int linkId) async {
+    try {
+      final response = await _httpService.delete(
+        "${AppRoutesApi.deleteLink}/$linkId",
+      );
+      if (response.statusCode == HttpStatus.noContent) {
+        return ResponseData.success(response.data, response.statusCode!);
+      } else {
+        return ResponseData.error(response.data);
+      }
+    } on DioException catch (e) {
+      return ResponseData.error(e.response!.data);
+    }
+  }
 }

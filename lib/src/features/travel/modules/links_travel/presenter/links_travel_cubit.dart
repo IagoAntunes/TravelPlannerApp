@@ -26,7 +26,8 @@ class LinksTravelCubit extends Cubit<ILinksTravelState> {
   }
 
   void deleteLink(int linkId) async {
-    //
+    await _linkRepository.deleteLink(linkId);
+    emit(SuccessDeletedLinkTravelListener(linkId: linkId));
   }
 
   void emitIdle() {
