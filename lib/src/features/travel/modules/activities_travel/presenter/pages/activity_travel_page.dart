@@ -498,12 +498,20 @@ class _ActivityTravelPageState extends State<ActivityTravelPage> {
                                     icon: Icons.add_outlined,
                                     iconColor: AppStyleColors.zinc200,
                                     backgroundColor: AppStyleColors.zinc800,
-                                    onPressed: () {
+                                    onPressed: () async {
                                       showModalBottomSheet(
                                         context: context,
                                         isScrollControlled: true,
                                         builder: (context) =>
-                                            const CreateLinkModalBottomSheet(),
+                                            CreateLinkModalBottomSheet(
+                                          travelId: widget.travel.id,
+                                        ),
+                                      ).then(
+                                        (value) {
+                                          if (value != null && value == true) {
+                                            widget.travel.links!.add(value);
+                                          }
+                                        },
                                       );
                                     },
                                   ),
