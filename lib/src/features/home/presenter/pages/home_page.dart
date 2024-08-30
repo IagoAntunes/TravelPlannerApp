@@ -55,17 +55,17 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          var notification = GetIt.I.get<NotificationService>();
-          notification.showNotificationSchedule(
-            CustomNotification(
-              id: 1,
-              body: 'Ola',
-              payload: 'Payload',
-              title: 'Title,',
-            ),
-          );
-          // final fcmToken = await FirebaseMessaging.instance.getToken();
-          // print(fcmToken);
+          // var notification = GetIt.I.get<NotificationService>();
+          // notification.showNotificationSchedule(
+          //   CustomNotification(
+          //     id: 1,
+          //     body: 'Ola',
+          //     payload: 'Payload',
+          //     title: 'Title,',
+          //   ),
+          // );
+          final fcmToken = await FirebaseMessaging.instance.getToken();
+          print(fcmToken);
         },
       ),
       body: SafeArea(

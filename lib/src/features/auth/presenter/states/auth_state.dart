@@ -1,9 +1,17 @@
+import 'package:travelplannerapp/src/features/auth/domain/models/user_model.dart';
+
 abstract class IAuthState {
   bool isAuthenticated;
-
-  IAuthState({required this.isAuthenticated});
+  UserModel? user;
+  IAuthState({
+    required this.isAuthenticated,
+    this.user,
+  });
 }
 
 class IdleAuthState extends IAuthState {
-  IdleAuthState({required super.isAuthenticated});
+  IdleAuthState({
+    required super.isAuthenticated,
+    super.user,
+  });
 }

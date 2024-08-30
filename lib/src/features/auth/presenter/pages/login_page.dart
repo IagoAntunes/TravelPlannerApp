@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
               listener: (context, state) {
                 if (state is SuccessLoginListener) {
                   var authCubit = GetIt.I.get<AuthCubit>();
-                  authCubit.authenticated();
+                  authCubit.authenticated(state.user);
                 } else if (state is FailureLoginListener) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

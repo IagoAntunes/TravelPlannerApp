@@ -14,7 +14,7 @@ class LoginCubit extends Cubit<ILoginState> {
     emit(LoadingLoginState());
     var result = await _repository.login(email, password);
     if (result.isSuccess) {
-      emit(SuccessLoginListener());
+      emit(SuccessLoginListener(user: result.user!));
     } else {
       emit(FailureLoginListener(message: result.statusMsg));
     }

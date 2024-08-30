@@ -72,7 +72,9 @@ class LinksTravelWidget extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: travelInfoCubit.travel.links?.length ?? 0,
                 itemBuilder: (context, index) => Dismissible(
-                  direction: DismissDirection.startToEnd,
+                  direction: travelInfoCubit.hasPermission()
+                      ? DismissDirection.startToEnd
+                      : DismissDirection.none,
                   background: Container(
                     color: Theme.of(context).colorScheme.error,
                     alignment: Alignment.centerLeft,
@@ -82,10 +84,12 @@ class LinksTravelWidget extends StatelessWidget {
                     ),
                   ),
                   key: Key(travelInfoCubit.travel.links![index].id.toString()),
-                  onDismissed: (direction) {
-                    _linksTravelCubit
-                        .deleteLink(travelInfoCubit.travel.links![index].id);
-                  },
+                  onDismissed: travelInfoCubit.hasPermission()
+                      ? (dismissible) {
+                          _linksTravelCubit.deleteLink(
+                              travelInfoCubit.travel.links![index].id);
+                        }
+                      : null,
                   child: ListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(
@@ -106,30 +110,40 @@ class LinksTravelWidget extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              width: double.infinity,
-              child: CButton.icon(
-                text: 'Cadastrar novo link',
-                textColor: AppStyleColors.zinc200,
-                icon: Icons.add_outlined,
-                iconColor: AppStyleColors.zinc200,
-                backgroundColor: AppStyleColors.zinc800,
-                onPressed: () async {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (context) => CreateLinkModalBottomSheet(
-                      travelId: travelInfoCubit.travel.id,
-                    ),
-                  ).then(
-                    (value) {
-                      if (value != null && value.runtimeType == LinkModel) {
-                        travelInfoCubit.travel.links!.add(value);
-                        _linksTravelCubit.emitIdle();
-                      }
-                    },
-                  );
-                },
+            Visibility(
+              visible: travelInfoCubit.hasPermission(),
+              child: SizedBox(
+                width: double.infinity,
+                child: CButton.icon(
+                  text: 'Cadastrar novo link',
+                  textColor: travelInfoCubit.hasPermission()
+                      ? AppStyleColors.zinc200
+                      : AppStyleColors.zinc900,
+                  icon: Icons.add_outlined,
+                  iconColor: travelInfoCubit.hasPermission()
+                      ? AppStyleColors.zinc200
+                      : AppStyleColors.zinc900,
+                  backgroundColor: AppStyleColors.zinc800,
+                  stateTypeButton: travelInfoCubit.hasPermission()
+                      ? StateTypeButton.idle
+                      : StateTypeButton.unable,
+                  onPressed: () async {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) => CreateLinkModalBottomSheet(
+                        travelId: travelInfoCubit.travel.id,
+                      ),
+                    ).then(
+                      (value) {
+                        if (value != null && value.runtimeType == LinkModel) {
+                          travelInfoCubit.travel.links!.add(value);
+                          _linksTravelCubit.emitIdle();
+                        }
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ],

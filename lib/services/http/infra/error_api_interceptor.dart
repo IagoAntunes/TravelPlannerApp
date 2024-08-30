@@ -17,7 +17,7 @@ class AuthInterceptor extends Interceptor {
     if (err.response?.realUri.path.contains('refreshToken') ?? false) {
       return handler.reject(err);
     }
-    if (err.response?.statusCode == 403 && _isTokenExpiredError(err)) {
+    if (err.response?.statusCode == 403) {
       // Verifica se já tentamos o refresh do token para esta requisição
       if (err.requestOptions.headers['isRetry'] == true) {
         return handler.reject(err);

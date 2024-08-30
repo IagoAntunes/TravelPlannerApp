@@ -96,6 +96,7 @@ class _TravelInfoPageState extends State<TravelInfoPage> {
                               PopupMenuButton(
                                 color: AppStyleColors.zinc800,
                                 elevation: 0.0,
+                                enabled: _travelInfoCubit.hasPermission(),
                                 style: ButtonStyle(
                                   backgroundColor: WidgetStatePropertyAll(
                                       AppStyleColors.zinc800),

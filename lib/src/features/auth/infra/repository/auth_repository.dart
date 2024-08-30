@@ -40,7 +40,14 @@ class AuthRepository extends IAuthRepository {
         value: token,
       );
 
-      _sharedPreferences.saveData(SharedPreferencesKeys.isAuthenticated, true);
+      _sharedPreferences.saveData(
+        SharedPreferencesKeys.isAuthenticated,
+        true,
+      );
+      _sharedPreferences.saveData(
+        SharedPreferencesKeys.user,
+        user.toJson(),
+      );
       return LoginResult.success(
         statusCode: result.statusCode,
         statusMsg: result.statusMsg,

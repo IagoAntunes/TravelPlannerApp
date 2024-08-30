@@ -19,22 +19,24 @@ class TravelAdapter {
 
   static TravelModel fromMap(Map<String, dynamic> map) {
     return TravelModel(
-        id: map['id'] as int,
-        localName: map['localName'] as String,
-        startDate: map['startDate'] as String,
-        endDate: map['endDate'] as String,
-        guests: map['guests'] != null
-            ? List<GuestModel>.from(
-                (map['guests'] as List).map(
-                    (x) => GuestAdapter.fromMap(x as Map<String, dynamic>)),
-              )
-            : [],
-        links: map['links'] != null
-            ? List<LinkModel>.from(
-                (map['links'] as List)
-                    .map((x) => LinkAdapter.fromMap(x as Map<String, dynamic>)),
-              )
-            : []);
+      id: map['id'] as int,
+      localName: map['localName'] as String,
+      startDate: map['startDate'] as String,
+      endDate: map['endDate'] as String,
+      guests: map['guests'] != null
+          ? List<GuestModel>.from(
+              (map['guests'] as List)
+                  .map((x) => GuestAdapter.fromMap(x as Map<String, dynamic>)),
+            )
+          : [],
+      links: map['links'] != null
+          ? List<LinkModel>.from(
+              (map['links'] as List)
+                  .map((x) => LinkAdapter.fromMap(x as Map<String, dynamic>)),
+            )
+          : [],
+      createdBy: map['createdBy'] as String,
+    );
   }
 
   static String toJson(TravelModel travel) => json.encode(toMap(travel));

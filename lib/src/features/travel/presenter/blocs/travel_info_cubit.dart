@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:travelplannerapp/src/features/travel/domain/model/travel_model.dart';
 import 'package:travelplannerapp/src/features/travel/domain/repository/i_travel_repository.dart';
 
+import '../../../auth/presenter/blocs/auth_cubit.dart';
 import '../states/travel_info_state.dart';
 
 enum EnumActivityTravelType {
@@ -37,5 +39,14 @@ class TravelInfoCubit extends Cubit<ITravelInfoState> {
     } else {
       emit(FailureDeleteTravelInfoListener(type: state.type));
     }
+  }
+
+  bool hasPermission() {
+    var authCubit = GetIt.I.get<AuthCubit>();
+    if (authCubit.state.user != null &&
+        authCubit.state.user!.name == travel.createdBy) {
+      return true;
+    }
+    return false;
   }
 }

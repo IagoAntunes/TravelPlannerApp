@@ -100,6 +100,9 @@ class _ListActivitiesTravelWidgetState
                       text: 'Nova Atividade',
                       icon: Icons.add,
                       iconAlignment: IconAlignment.end,
+                      stateTypeButton: widget.travelInfoCubit.hasPermission()
+                          ? StateTypeButton.idle
+                          : StateTypeButton.unable,
                       onPressed: () {
                         showModalBottomSheet(
                           context: context,
@@ -191,14 +194,17 @@ class _ListActivitiesTravelWidgetState
                                   .elementAt(indexDayActivity)
                                   .id
                                   .toString()),
-                              onDismissed: (direction) {
-                                _cubit.deleteActivity(
-                                  successState
-                                      .groupedActivities[dateList[indexDate]]!
-                                      .elementAt(indexDayActivity)
-                                      .id,
-                                );
-                              },
+                              onDismissed:
+                                  widget.travelInfoCubit.hasPermission()
+                                      ? (direction) {
+                                          _cubit.deleteActivity(
+                                            successState.groupedActivities[
+                                                    dateList[indexDate]]!
+                                                .elementAt(indexDayActivity)
+                                                .id,
+                                          );
+                                        }
+                                      : null,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 16,

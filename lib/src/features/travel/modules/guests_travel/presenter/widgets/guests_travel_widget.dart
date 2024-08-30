@@ -93,7 +93,9 @@ class GuestsTravelWidget extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: travelInfoCubit.travel.guests?.length ?? 0,
                   itemBuilder: (context, index) => Dismissible(
-                    direction: DismissDirection.startToEnd,
+                    direction: travelInfoCubit.hasPermission()
+                        ? DismissDirection.startToEnd
+                        : DismissDirection.none,
                     background: Container(
                       color: Theme.of(context).colorScheme.error,
                       alignment: Alignment.centerLeft,
@@ -104,10 +106,12 @@ class GuestsTravelWidget extends StatelessWidget {
                     ),
                     key: Key(
                         travelInfoCubit.travel.guests![index].id.toString()),
-                    onDismissed: (direction) {
-                      _guestTravelCubit.deleteGuest(
-                          travelInfoCubit.travel.guests![index].id);
-                    },
+                    onDismissed: travelInfoCubit.hasPermission()
+                        ? (direction) {
+                            _guestTravelCubit.deleteGuest(
+                                travelInfoCubit.travel.guests![index].id);
+                          }
+                        : null,
                     child: ListTile(
                       contentPadding: EdgeInsets.zero,
                       title: Text(
@@ -131,31 +135,41 @@ class GuestsTravelWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: CButton.icon(
-                    text: 'Convidar',
-                    textColor: AppStyleColors.zinc200,
-                    icon: Icons.add_outlined,
-                    iconColor: AppStyleColors.zinc200,
-                    backgroundColor: AppStyleColors.zinc800,
-                    onPressed: () async {
-                      List<String> listEmails = [];
-                      await showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (context) => SelectGuestsWidget(
-                          emailGuests: listEmails,
-                        ),
-                      ).then(
-                        (value) {
-                          if (listEmails.isNotEmpty) {
-                            _guestTravelCubit.createGuest(
-                                listEmails, travelInfoCubit.travel.id);
-                          }
-                        },
-                      );
-                    },
+                Visibility(
+                  visible: travelInfoCubit.hasPermission(),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: CButton.icon(
+                      text: 'Convidar',
+                      textColor: travelInfoCubit.hasPermission()
+                          ? AppStyleColors.zinc200
+                          : AppStyleColors.zinc900,
+                      icon: Icons.add_outlined,
+                      iconColor: travelInfoCubit.hasPermission()
+                          ? AppStyleColors.zinc200
+                          : AppStyleColors.zinc900,
+                      stateTypeButton: travelInfoCubit.hasPermission()
+                          ? StateTypeButton.idle
+                          : StateTypeButton.unable,
+                      backgroundColor: AppStyleColors.zinc800,
+                      onPressed: () async {
+                        List<String> listEmails = [];
+                        await showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => SelectGuestsWidget(
+                            emailGuests: listEmails,
+                          ),
+                        ).then(
+                          (value) {
+                            if (listEmails.isNotEmpty) {
+                              _guestTravelCubit.createGuest(
+                                  listEmails, travelInfoCubit.travel.id);
+                            }
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],

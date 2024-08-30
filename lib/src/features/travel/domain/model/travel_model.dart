@@ -9,6 +9,7 @@ class TravelModel {
   String endDate;
   List<GuestModel>? guests = [];
   List<LinkModel>? links = [];
+  String createdBy;
   TravelModel({
     required this.id,
     required this.localName,
@@ -16,5 +17,6 @@ class TravelModel {
     required this.endDate,
     required this.guests,
     required this.links,
+    required this.createdBy,
   });
 }
