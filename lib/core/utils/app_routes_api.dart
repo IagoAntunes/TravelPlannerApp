@@ -22,4 +22,5 @@ class AppRoutesApi {
   //guest
   static const String createGuest = "$baseUrl/guest/create";
   static const String deleteGuest = "$baseUrl/guest/delete";
+  static const String actionInviteGuest = "$baseUrl/guest/actionInviteToTravel";
 }

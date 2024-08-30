@@ -73,10 +73,10 @@ class AuthInterceptor extends Interceptor {
     }
   }
 
-  bool _isTokenExpiredError(DioException err) {
-    // Verifique a mensagem de erro ou código de erro específico para determinar se o token expirou
-    // Isso depende de como sua API indica um token expirado
-    // Exemplo:
-    return err.response?.data['message'] == 'Token expired';
-  }
+  // bool _isTokenExpiredError(DioException err) {
+  //   // Verifique a mensagem de erro ou código de erro específico para determinar se o token expirou
+  //   // Isso depende de como sua API indica um token expirado
+  //   // Exemplo:
+  //   return err.response?.data['message'] == 'Token expired';
+  // }
 }

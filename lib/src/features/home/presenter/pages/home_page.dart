@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:travelplannerapp/core/components/c_button.dart';
-import 'package:travelplannerapp/services/notification/domain/model/custom_notification.dart';
 import 'package:travelplannerapp/src/features/travel/modules/create_travel/presenter/pages/create_travel_page.dart';
 import 'package:travelplannerapp/src/features/home/presenter/blocs/home_cubit.dart';
 import 'package:travelplannerapp/src/features/travel/modules/list_travels/presenter/pages/list_travels_page.dart';
@@ -55,6 +54,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          // showModalBottomSheet(
+          //   context: context,
+          //   builder: (context) => ConfirmPresenceBottomSheetWidget(),
+          // );
           // var notification = GetIt.I.get<NotificationService>();
           // notification.showNotificationSchedule(
           //   CustomNotification(
@@ -64,8 +67,8 @@ class _HomePageState extends State<HomePage> {
           //     title: 'Title,',
           //   ),
           // );
-          final fcmToken = await FirebaseMessaging.instance.getToken();
-          print(fcmToken);
+          // final fcmToken = await FirebaseMessaging.instance.getToken();
+          // print(fcmToken);
         },
       ),
       body: SafeArea(

@@ -14,7 +14,6 @@ class AuthCubit extends Cubit<IAuthState> {
   }
 
   void init() async {
-    print("Oi");
     if (state.user == null) {
       var userMap = await _service.getData("user");
       if (userMap != null) {

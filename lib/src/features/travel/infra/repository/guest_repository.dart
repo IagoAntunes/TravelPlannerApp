@@ -2,6 +2,7 @@ import 'package:travelplannerapp/core/utils/base_repository_result.dart';
 import 'package:travelplannerapp/core/utils/base_service_response.dart';
 import 'package:travelplannerapp/src/features/travel/domain/adapter/guest_adapter.dart';
 import 'package:travelplannerapp/src/features/travel/domain/repository/i_guest_repository.dart';
+import 'package:travelplannerapp/src/features/travel/domain/request/action_invite_guest.dart';
 import 'package:travelplannerapp/src/features/travel/domain/request/create_guest_request.dart';
 import 'package:travelplannerapp/src/features/travel/infra/datasource/i_guest_datasource.dart';
 
@@ -44,6 +45,23 @@ class GuestRepository extends IGuestRepository {
       );
     } else {
       return CreateGuestResult.failure(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+      );
+    }
+  }
+
+  @override
+  Future<IBaseResult> actionInviteGuest(String guestId, String action) async {
+    var request = ActionInviteGuest(guestId: guestId, action: action);
+    final response = await _guestDataSource.actionInviteGuest(request);
+    if (response is SuccessResponseData) {
+      return BaseResult.success(
+        statusCode: response.statusCode,
+        statusMsg: response.statusMsg,
+      );
+    } else {
+      return BaseResult.failure(
         statusCode: response.statusCode,
         statusMsg: response.statusMsg,
       );

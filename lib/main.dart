@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'TravelPlanner',
       theme: AppTheme.getTheme(context),
+      navigatorKey: NavigatorService.navigatorKey,
       home: BlocBuilder<AuthCubit, IAuthState>(
         bloc: _authCubit,
         builder: (context, state) {
@@ -85,4 +86,9 @@ class MyHttpOverrides extends HttpOverrides {
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
   }
+}
+
+class NavigatorService {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 }

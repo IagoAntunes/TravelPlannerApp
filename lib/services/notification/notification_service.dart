@@ -28,7 +28,7 @@ class NotificationService {
     );
   }
 
-  showNotification(CustomNotification notification) {
+  void showNotification(CustomNotification notification) {
     androidDetails = const AndroidNotificationDetails(
       'lembrete_notifications',
       'Lembretes',
@@ -48,7 +48,7 @@ class NotificationService {
     );
   }
 
-  showNotificationSchedule(CustomNotification notification) {
+  void showNotificationSchedule(CustomNotification notification) {
     final date = DateTime.now().add(const Duration(seconds: 5));
     androidDetails = const AndroidNotificationDetails(
       'lembrete_notifications',
@@ -73,7 +73,7 @@ class NotificationService {
     );
   }
 
-  checkForNotifications() async {
+  void checkForNotifications() async {
     final details =
         await localNotificationsPlugin.getNotificationAppLaunchDetails();
     if (details != null && details.didNotificationLaunchApp) {

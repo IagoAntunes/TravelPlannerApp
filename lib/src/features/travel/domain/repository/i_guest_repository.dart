@@ -5,4 +5,6 @@ abstract class IGuestRepository {
   Future<IBaseResult> deleteGuest(int guestId);
 
   Future<CreateGuestResult> createGuest(String email, int travelId);
+
+  Future<IBaseResult> actionInviteGuest(String guestId, String action);
 }

@@ -30,6 +30,15 @@ class GuestTravelCubit extends Cubit<IGuestTravelState> {
     }
   }
 
+  Future<void> actionInviteGuest(String guestId, String action) async {
+    final result = await _guestRepository.actionInviteGuest(guestId, action);
+    if (result.isSuccess) {
+      emit(const SuccessActionInviteGuestTravelListener());
+    } else {
+      emit(const FailureActionInviteGuestTravelListener());
+    }
+  }
+
   void updateList() {
     emit(const IdleGuestTravelState());
   }

@@ -23,17 +23,18 @@ class GuestsTravelWidget extends StatelessWidget {
   IconData _statusIconGuest(String status) {
     if (status == "PENDING") {
       return Icons.circle_outlined;
-    } else if (status == "ACCEPTED") {
+    } else if (status == "ACCEPT") {
       return Icons.check_circle;
     } else {
-      return Icons.check_circle;
+      return Icons.do_not_disturb_on_outlined;
     }
   }
 
   Color _statusColorGuest(String status) {
+    status.toUpperCase();
     if (status == "PENDING") {
       return Colors.orange;
-    } else if (status == "ACCEPTED") {
+    } else if (status == "ACCEPT") {
       return AppStyleColors.lime300;
     } else {
       return Colors.red;

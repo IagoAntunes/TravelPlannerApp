@@ -13,6 +13,14 @@ class SuccessDeletedGuestTravelListener extends IGuestTravelListener {
   final int guestId;
 }
 
+class SuccessActionInviteGuestTravelListener extends IGuestTravelListener {
+  const SuccessActionInviteGuestTravelListener();
+}
+
+class FailureActionInviteGuestTravelListener extends IGuestTravelListener {
+  const FailureActionInviteGuestTravelListener();
+}
+
 class SuccessCreatedGuestTravelListener extends IGuestTravelListener {
   const SuccessCreatedGuestTravelListener({
     required this.guests,

@@ -6,6 +6,7 @@ import 'package:travelplannerapp/src/features/travel/domain/request/create_guest
 import 'package:travelplannerapp/src/features/travel/infra/datasource/i_guest_datasource.dart';
 
 import '../../../../core/utils/app_routes_api.dart';
+import '../domain/request/action_invite_guest.dart';
 
 class GuestDataSource extends IGuestDataSource {
   GuestDataSource({required Dio httpService}) : _httpService = httpService;
@@ -34,6 +35,26 @@ class GuestDataSource extends IGuestDataSource {
     try {
       final response = await _httpService.post(
         AppRoutesApi.createGuest,
+        data: request.toMap(),
+      );
+      if (response.statusCode == HttpStatus.created) {
+        return ResponseData.success(
+          response.data,
+          response.statusCode!,
+        );
+      } else {
+        return ResponseData.error(response.data);
+      }
+    } on DioException catch (e) {
+      return ResponseData.error(e.response!.data);
+    }
+  }
+
+  @override
+  Future<IResponseData> actionInviteGuest(ActionInviteGuest request) async {
+    try {
+      final response = await _httpService.post(
+        AppRoutesApi.actionInviteGuest,
         data: request.toMap(),
       );
       if (response.statusCode == HttpStatus.created) {
